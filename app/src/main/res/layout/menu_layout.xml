@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_menu_backgound"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent_black"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/lin_menu_Area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/lin_menu_line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal" >
+
+            <!-- menu1 -->
+
+            <LinearLayout
+                android:id="@+id/lin_menu1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/iv_menu1_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/tv_menu1_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:textColor="@color/main_tab_font"
+                    android:textSize="@dimen/font_tiny" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_menu_dividing_line1"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/dividing_line_gray" />
+
+            <!-- menu2 -->
+
+            <LinearLayout
+                android:id="@+id/lin_menu2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/iv_menu2_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/tv_menu2_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:textColor="@color/main_tab_font"
+                    android:textSize="@dimen/font_tiny" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_menu_dividing_line2"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/dividing_line_gray" />
+
+            <!-- menu3 -->
+
+            <LinearLayout
+                android:id="@+id/lin_menu3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/iv_menu3_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/tv_menu3_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:textColor="@color/main_tab_font"
+                    android:textSize="@dimen/font_tiny" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_menu_dividing_line3"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/dividing_line_gray" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_menu_line1_dividing_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/dividing_line_gray" />
+
+        <!-- menu line2 -->
+
+        <LinearLayout
+            android:id="@+id/lin_menu_line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <!-- menu4 -->
+
+            <LinearLayout
+                android:id="@+id/lin_menu4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/iv_menu4_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/tv_menu4_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:textColor="@color/main_tab_font"
+                    android:textSize="@dimen/font_tiny" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_menu_dividing_line4"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/dividing_line_gray" />
+
+            <!-- menu5 -->
+
+            <LinearLayout
+                android:id="@+id/lin_menu5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/iv_menu5_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/tv_menu5_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:textColor="@color/main_tab_font"
+                    android:textSize="@dimen/font_tiny" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_menu_dividing_line5"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/dividing_line_gray" />
+
+            <!-- menu6 -->
+
+            <LinearLayout
+                android:id="@+id/lin_menu6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingTop="@dimen/margin_small"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/iv_menu6_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/tv_menu6_lable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:textColor="@color/main_tab_font"
+                    android:textSize="@dimen/font_tiny" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_menu_dividing_line6"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/dividing_line_gray" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="main">#388bff</color>
+    <color name="main_tab_font_normal">#7c8da7</color>
+
+    <color name="main_tab_button_selete">#3a3a3a</color>
+    <color name="main_tab_button_normal">#222222</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent_black">#55000000</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="background_gray2">#e4e4e4</color>
+    <color name="font_black">#666666</color>
+    <color name="main_tab_background">#f6f6f6</color>
+    <color name="background_gray">#ffb2b2b2</color>
+    <color name="background_gray3">#efefef</color>
+    <color name="black">#000000</color>
+    <!-- 应用主题颜色-->
+    <color name="btn_app_theme1">#8bc34a</color>
+    <color name="btn_app_theme2">#ffb0c32d</color>
+    <color name="btn_app_theme3">#8bc7ee</color>
+    <color name="btn_app_theme4">#5393ed</color>
+
+    <!-- 字体颜色-->
+    <color name="font_gray2">#bfbfbf</color>
+    <color name="font_gray1">#707070</color>
+    <color name="font_red1">#ffF21C1A</color>
+    <color name="font_red2">#f88e8d</color>
+
+    <!-- 列表项分割线颜色 -->
+    <color name="listview_divider_color">#eaeaea</color>
+    <color name="dividing_line_gray">#e0e0e0</color>
+
+    <!--路线颜色-->
+    <color name="map_line">#388bff</color>
+    <!-- 主页选项卡按钮配色方案 -->
+    <color name="main_tab_font_selete">#388bff</color>
+    <color name="canlendar_text_color">#4FC8FB</color>
+</resources>

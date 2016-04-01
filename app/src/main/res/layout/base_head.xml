@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	<!-- 公共头布局 -->
+    <include layout="@layout/include_head" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <!-- 页面主内容 -->
+            <RelativeLayout
+                android:id="@+id/rel_base_contentArea"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </RelativeLayout>
+            <!-- 菜单布局 -->
+            <include 
+                android:id="@+id/lin_base_menuArea"
+                layout="@layout/menu_layout"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+		<!-- 页面加载时显示的等待动画 -->
+    </RelativeLayout>
+
+</LinearLayout>
