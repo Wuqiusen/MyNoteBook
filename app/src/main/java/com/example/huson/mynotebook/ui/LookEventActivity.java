@@ -60,12 +60,12 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
         tv_end_time.setText(infos.getEndtime());
         int type = infos.getType();
         String complete = infos.getComplete();
-        if (complete.equals("0")){
+        if (complete.equals("2")){
             cb_nofinish.setChecked(true);
-        }else if (complete.equals("1")){
+        }else if (complete.equals("3")){
             cb_nofinish.setClickable(false);
             cb_halffinish.setChecked(true);
-        }else {
+        }else if (complete.equals("1")){
             cb_nofinish.setClickable(false);
             cb_halffinish.setClickable(false);
             cb_finish.setChecked(true);
@@ -115,15 +115,15 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
             case R.id.btn_query:
                 if (cb_finish.isChecked()){
                     msg = "你确定该事件已完成？";
-                    complete = "2";
+                    complete = "1";
                     needcoin = 4;
                 }else if (cb_nofinish.isChecked()){
                     msg = "你确定该事件未完成？";
-                    complete = "0";
+                    complete = "2";
                     needcoin = 0;
                 }else if (cb_halffinish.isChecked()){
                     msg = "你确定该事件已完成50%？";
-                    complete = "1";
+                    complete = "3";
                     needcoin = 2;
                 }else {
                     ToastHelper.showToast("请先确定完成度，谢谢！", this);

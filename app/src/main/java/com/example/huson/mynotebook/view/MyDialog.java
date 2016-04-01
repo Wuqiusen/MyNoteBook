@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -36,11 +37,13 @@ public class MyDialog extends AlertDialog {
     private ImageView imageView;
     private Button cancel;
     private Button query;
+    private EditText editText;
 
     public static final String HAVEBUTTON = "havebutton";
     public static final String NOBUTTON = "nobutton";
     public static final String PROGRESS = "progress";
     private static final String IMAGEVIEW = "imageview";
+    public static final String EDITTEXT = "edittext";
 
     /**
      * mtype=0版本更新 ，mtype=1进度条，mtype=2图片， mtype=3注销
@@ -86,11 +89,13 @@ public class MyDialog extends AlertDialog {
             ll_tn= (LinearLayout) findViewById(R.id.ll_dialog);
             cancel = (Button) findViewById(R.id.cancel_dialog);
             query = (Button) findViewById(R.id.query_dialog);
+            editText = (EditText) findViewById(R.id.et_mydialog);
         title.setVisibility(View.GONE);
         line.setVisibility(View.GONE);
         mesg.setVisibility(View.GONE);
         ll_tn.setVisibility(View.GONE);
         tv_percent.setVisibility(View.GONE);
+        editText.setVisibility(View.GONE);
 
         initView();
 
@@ -130,6 +135,14 @@ public class MyDialog extends AlertDialog {
                 line.setVisibility(View.VISIBLE);
                 mesg.setVisibility(View.VISIBLE);
                 ll_tn.setVisibility(View.INVISIBLE);
+                title.setText(mtitle);
+                mesg.setText(mmesg);
+                break;
+            case EDITTEXT:
+                title.setVisibility(View.VISIBLE);
+                line.setVisibility(View.VISIBLE);
+                editText.setVisibility(View.VISIBLE);
+                ll_tn.setVisibility(View.VISIBLE);
                 title.setText(mtitle);
                 mesg.setText(mmesg);
                 break;

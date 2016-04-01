@@ -60,6 +60,11 @@ public abstract class BaseHeadActivity extends FragmentActivity {
         btn_backButton.setOnClickListener(listener);
         btn_backButton.setVisibility(View.VISIBLE);
     }
+    public void showRightButton(OnClickListener listener,String string) {
+        btn_headRightButton.setOnClickListener(listener);
+        btn_headRightButton.setText(string);
+        btn_headRightButton.setVisibility(View.VISIBLE);
+    }
     public void showBack(final Activity activity) {
         btn_backButton.setOnClickListener(new OnClickListener() {
             @Override

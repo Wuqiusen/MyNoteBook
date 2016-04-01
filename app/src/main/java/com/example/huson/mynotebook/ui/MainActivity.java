@@ -1,4 +1,4 @@
-package com.example.huson.mynotebook;
+package com.example.huson.mynotebook.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.huson.mynotebook.TimeTube.TimeTubeFragment;
-import com.example.huson.mynotebook.TodayEvent.TodayEventFragment;
+import com.example.huson.mynotebook.R;
+import com.example.huson.mynotebook.ui.fragment.TimeTubeFragment;
+import com.example.huson.mynotebook.ui.fragment.TodayEventFragment;
 import com.example.huson.mynotebook.adapter.MyFragmentViewPagerAdapter;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
 import com.example.huson.mynotebook.utils.SpUtils;

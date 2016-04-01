@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 import com.example.huson.mynotebook.R;
 import com.example.huson.mynotebook.adapter.MySpinnerAdapter;
+import com.example.huson.mynotebook.adapter.MyTypeSpinnerAdapter;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
 import com.example.huson.mynotebook.db.DataDao;
+import com.example.huson.mynotebook.domain.TypeInfo;
 import com.example.huson.mynotebook.utils.AlarmReceiver;
 import com.example.huson.mynotebook.utils.DebugLog;
 import com.example.huson.mynotebook.view.PickerView;
@@ -46,8 +48,8 @@ public class AddEventActivity extends BaseHeadActivity{
     private EditText et_context;
     private Button btn_query;
 
-    private List<String> list_type;
-    private MySpinnerAdapter mAdapter;
+    private List<TypeInfo> list_type;
+    private MyTypeSpinnerAdapter mAdapter;
 
     private DataDao dao;
     private String msgid;
@@ -108,12 +110,8 @@ public class AddEventActivity extends BaseHeadActivity{
 
 
 
-        list_type = new ArrayList<String>();
-        list_type.add("学习");
-        list_type.add("娱乐");
-        list_type.add("生活");
-        list_type.add("工作");
-        mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, list_type);
+        list_type = new ArrayList<TypeInfo>();
+        mAdapter = new MyTypeSpinnerAdapter(this, R.layout.item_spinner, list_type);
         sp_type.setAdapter(mAdapter);
         sp_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

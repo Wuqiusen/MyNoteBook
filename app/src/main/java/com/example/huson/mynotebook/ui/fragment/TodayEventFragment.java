@@ -1,4 +1,4 @@
-package com.example.huson.mynotebook.TodayEvent;
+package com.example.huson.mynotebook.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

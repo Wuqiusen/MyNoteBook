@@ -161,6 +161,147 @@ public class DataDao {
 		return infrom;
 	}
 
+	public List<DataInfo> checkbyIsfinish(String str){
+		SQLiteDatabase db = helper.getReadableDatabase();
+		List<DataInfo> infos = new ArrayList<DataInfo>();
+		Cursor cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+				"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+				"isread"}, "complete=?", new String[]{str}, null, null, "_id desc");
+		while(cursor.moveToNext()){
+			DataInfo infrom = new DataInfo();
+			int id = cursor.getInt(0);
+			String msgid = cursor.getString(1);
+			int type = cursor.getInt(2);
+			String context = cursor.getString(3);
+			String starttime = cursor.getString(4);
+			String endtime = cursor.getString(5);
+			String complete = cursor.getString(6);
+			String year = cursor.getString(7);
+			String month = cursor.getString(8);
+			String week = cursor.getString(9);
+			String day = cursor.getString(10);
+			String finishyear = cursor.getString(11);
+			String finishmonth = cursor.getString(12);
+			String finishweek = cursor.getString(13);
+			String finishday = cursor.getString(14);
+			int isread = cursor.getInt(15);
+			infrom.setId(id);
+			infrom.setMsgid(msgid);
+			infrom.setType(type);
+			infrom.setContext(context);
+			infrom.setStarttime(starttime);
+			infrom.setEndtime(endtime);
+			infrom.setComplete(complete);
+			infrom.setYear(year);
+			infrom.setMonth(month);
+			infrom.setWeek(week);
+			infrom.setDay(day);
+			infrom.setFinishyear(finishyear);
+			infrom.setFinishmonth(finishmonth);
+			infrom.setFinishweek(finishweek);
+			infrom.setFinishday(finishday);
+			infrom.setIsread(isread);
+			infos.add(infrom);
+		}
+		cursor.close();
+		db.close();
+		return infos;
+	}
+
+	public List<DataInfo> checkbyIsfinishAndType(String finish, int mtype){
+		SQLiteDatabase db = helper.getReadableDatabase();
+		List<DataInfo> infos = new ArrayList<DataInfo>();
+		Cursor cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+				"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+				"isread"}, "complete='"+ finish +"'and type = '" + mtype +"'", null, null, null, "_id desc");
+		while(cursor.moveToNext()){
+			DataInfo infrom = new DataInfo();
+			int id = cursor.getInt(0);
+			String msgid = cursor.getString(1);
+			int type = cursor.getInt(2);
+			String context = cursor.getString(3);
+			String starttime = cursor.getString(4);
+			String endtime = cursor.getString(5);
+			String complete = cursor.getString(6);
+			String year = cursor.getString(7);
+			String month = cursor.getString(8);
+			String week = cursor.getString(9);
+			String day = cursor.getString(10);
+			String finishyear = cursor.getString(11);
+			String finishmonth = cursor.getString(12);
+			String finishweek = cursor.getString(13);
+			String finishday = cursor.getString(14);
+			int isread = cursor.getInt(15);
+			infrom.setId(id);
+			infrom.setMsgid(msgid);
+			infrom.setType(type);
+			infrom.setContext(context);
+			infrom.setStarttime(starttime);
+			infrom.setEndtime(endtime);
+			infrom.setComplete(complete);
+			infrom.setYear(year);
+			infrom.setMonth(month);
+			infrom.setWeek(week);
+			infrom.setDay(day);
+			infrom.setFinishyear(finishyear);
+			infrom.setFinishmonth(finishmonth);
+			infrom.setFinishweek(finishweek);
+			infrom.setFinishday(finishday);
+			infrom.setIsread(isread);
+			infos.add(infrom);
+		}
+		cursor.close();
+		db.close();
+		return infos;
+	}
+
+	public List<DataInfo> checkbyType(int stype){
+		SQLiteDatabase db = helper.getReadableDatabase();
+		List<DataInfo> infos = new ArrayList<DataInfo>();
+		Cursor cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+				"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+				"isread"}, "type='"+ stype +"'", null, null, null, "_id desc");
+		while(cursor.moveToNext()){
+			DataInfo infrom = new DataInfo();
+			int id = cursor.getInt(0);
+			String msgid = cursor.getString(1);
+			int type = cursor.getInt(2);
+			String context = cursor.getString(3);
+			String starttime = cursor.getString(4);
+			String endtime = cursor.getString(5);
+			String complete = cursor.getString(6);
+			String year = cursor.getString(7);
+			String month = cursor.getString(8);
+			String week = cursor.getString(9);
+			String day = cursor.getString(10);
+			String finishyear = cursor.getString(11);
+			String finishmonth = cursor.getString(12);
+			String finishweek = cursor.getString(13);
+			String finishday = cursor.getString(14);
+			int isread = cursor.getInt(15);
+			infrom.setId(id);
+			infrom.setMsgid(msgid);
+			infrom.setType(type);
+			infrom.setContext(context);
+			infrom.setStarttime(starttime);
+			infrom.setEndtime(endtime);
+			infrom.setComplete(complete);
+			infrom.setYear(year);
+			infrom.setMonth(month);
+			infrom.setWeek(week);
+			infrom.setDay(day);
+			infrom.setFinishyear(finishyear);
+			infrom.setFinishmonth(finishmonth);
+			infrom.setFinishweek(finishweek);
+			infrom.setFinishday(finishday);
+			infrom.setIsread(isread);
+			infos.add(infrom);
+		}
+		cursor.close();
+		db.close();
+		return infos;
+	}
+
 	public List<DataInfo> checkbyYear(String str){
 		SQLiteDatabase db = helper.getReadableDatabase();
 		List<DataInfo> infos = new ArrayList<DataInfo>();

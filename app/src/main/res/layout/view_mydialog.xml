@@ -48,6 +48,16 @@
         android:layout_marginRight="@dimen/margin_order"
         android:textSize="@dimen/font_large"
         android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/et_mydialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/margin_fit"
+            android:layout_marginLeft="@dimen/margin_order"
+            android:layout_marginRight="@dimen/margin_order"
+            android:layout_below="@+id/dialog_progressbar"
+            android:visibility="gone"/>
     <ProgressBar
         android:id="@+id/dialog_progressbar"
         android:layout_width="match_parent"

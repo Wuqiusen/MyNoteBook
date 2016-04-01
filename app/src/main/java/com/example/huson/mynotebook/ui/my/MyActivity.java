@@ -23,6 +23,7 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
     private LinearLayout ll_my_wish;
     private LinearLayout ll_analyze;
     private LinearLayout ll_structure_analyze;
+    private LinearLayout ll_setting;
 
     private DataDao dao;
     private List<DataInfo> infos;
@@ -30,6 +31,7 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
     public final static String WISH = "wish";
     public final static String ANALYZE = "analyze";
     public final static String ST_ANALYZE = "structure_analyze";
+    public final static String SETTING = "setting";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
         ll_analyze = (LinearLayout) findViewById(R.id.ll_analyze);
         ll_my_wish = (LinearLayout) findViewById(R.id.ll_my_wish);
         ll_structure_analyze = (LinearLayout) findViewById(R.id.ll_structure_analyze);
+        ll_setting = (LinearLayout) findViewById(R.id.ll_setting);
 
     }
 
@@ -69,6 +72,7 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
         ll_structure_analyze.setOnClickListener(this);
         ll_my_wish.setOnClickListener(this);
         ll_analyze.setOnClickListener(this);
+        ll_setting.setOnClickListener(this);
 
     }
 
@@ -77,13 +81,19 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
         Intent intent = new Intent();
         switch (v.getId()){
             case R.id.ll_analyze:
-                intent.putExtra("type", WISH);
+                intent.setClass(this, MyListviewActivity.class);
+                intent.putExtra("type", ANALYZE);
                 break;
             case R.id.ll_my_wish:
                 intent.setClass(this, MyWishActivity.class);
                 break;
             case R.id.ll_structure_analyze:
+                intent.setClass(this, MyListviewActivity.class);
                 intent.putExtra("type", ST_ANALYZE);
+                break;
+            case R.id.ll_setting:
+                intent.setClass(this, MyListviewActivity.class);
+                intent.putExtra("type", SETTING);
                 break;
         }
         startActivity(intent);
