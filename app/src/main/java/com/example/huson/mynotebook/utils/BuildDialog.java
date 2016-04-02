@@ -3,6 +3,8 @@ package com.example.huson.mynotebook.utils;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.view.View;
+import android.view.Window;
+import android.widget.EditText;
 
 import com.example.huson.mynotebook.view.MyDialog;
 
@@ -41,6 +43,7 @@ public class BuildDialog {
         mtitle = title;
         mtype = type;
         sDialog = new MyDialog(mactivity, mtitle, msg, mtype);
+        sDialog.setView(new EditText(activity));
         sDialog.show();
 
     }
@@ -124,6 +127,10 @@ public class BuildDialog {
 
     public boolean isDismiss(){
         return sDialog.isShowing();
+    }
+
+    public String getEtText(){
+            return sDialog.getEtText();
     }
 
 }

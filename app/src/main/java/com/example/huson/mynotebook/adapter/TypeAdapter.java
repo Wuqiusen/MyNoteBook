@@ -44,15 +44,6 @@ public class TypeAdapter extends CommonAdapter<TypeInfo> {
         tv_poi = (TextView) holder.findViewById(R.id.tv_poi);
         dao = new TypeDao(mcontext);
         try {
-            ll_item_data.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mcontext, LookEventActivity.class);
-                    intent.putExtra("id", item.getId());
-                    mcontext.startActivity(intent);
-                }
-            });
-
             ll_item_data.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View arg0) {
@@ -68,9 +59,9 @@ public class TypeAdapter extends CommonAdapter<TypeInfo> {
                                 dao.delete(id);
                                 clear();
                                 addAll(dao.findAll());
-                                BuildDialog.myDialog().DismissDialog();
                             }
                             ToastHelper.showToast("删除成功", mContext);
+                            BuildDialog.myDialog().DismissDialog();
                         }
                     });
                     BuildDialog.myDialog().ButtonCancel(new View.OnClickListener() {

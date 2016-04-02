@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -99,6 +100,7 @@ public class MyDialog extends AlertDialog {
 
         initView();
 
+
     }
 
     private void initView(){
@@ -142,9 +144,11 @@ public class MyDialog extends AlertDialog {
                 title.setVisibility(View.VISIBLE);
                 line.setVisibility(View.VISIBLE);
                 editText.setVisibility(View.VISIBLE);
+                editText.setFocusable(true);
                 ll_tn.setVisibility(View.VISIBLE);
                 title.setText(mtitle);
                 mesg.setText(mmesg);
+
                 break;
 
         }
@@ -173,6 +177,10 @@ public class MyDialog extends AlertDialog {
     public void SetButtonText(String calaeltext, String querytext){
         cancel.setText(calaeltext);
         query.setText(querytext);
+    }
+
+    public String getEtText(){
+        return editText.getText().toString();
     }
 
 }

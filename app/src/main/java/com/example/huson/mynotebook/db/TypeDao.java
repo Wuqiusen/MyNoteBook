@@ -43,7 +43,7 @@ public class TypeDao {
 	public List<TypeInfo> findAll(){
 		SQLiteDatabase db = helper.getReadableDatabase();
 		List<TypeInfo> infos = new ArrayList<TypeInfo>();
-		Cursor cursor = db.query("type", new String[]{"_id","type","name","other"}, null, null, null, null, "_id desc");
+		Cursor cursor = db.query("type", new String[]{"_id","type","name","other"}, null, null, null, null, "_id");
 		while(cursor.moveToNext()){
 			TypeInfo infrom = new TypeInfo();
 			int id = cursor.getInt(0);

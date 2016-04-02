@@ -19,6 +19,7 @@ import com.example.huson.mynotebook.adapter.MySpinnerAdapter;
 import com.example.huson.mynotebook.adapter.MyTypeSpinnerAdapter;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
 import com.example.huson.mynotebook.db.DataDao;
+import com.example.huson.mynotebook.db.TypeDao;
 import com.example.huson.mynotebook.domain.TypeInfo;
 import com.example.huson.mynotebook.utils.AlarmReceiver;
 import com.example.huson.mynotebook.utils.DebugLog;
@@ -52,6 +53,7 @@ public class AddEventActivity extends BaseHeadActivity{
     private MyTypeSpinnerAdapter mAdapter;
 
     private DataDao dao;
+    private TypeDao typeDao;
     private String msgid;
     private String starttime;
     private String endtime;
@@ -108,9 +110,8 @@ public class AddEventActivity extends BaseHeadActivity{
         now = formatter3.format(curDate);
         et_end_hour.setText(now);
 
-
-
-        list_type = new ArrayList<TypeInfo>();
+        typeDao = new TypeDao(this);
+        list_type = typeDao.findAll();
         mAdapter = new MyTypeSpinnerAdapter(this, R.layout.item_spinner, list_type);
         sp_type.setAdapter(mAdapter);
         sp_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

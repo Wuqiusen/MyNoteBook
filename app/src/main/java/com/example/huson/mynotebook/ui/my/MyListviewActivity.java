@@ -23,6 +23,7 @@ import com.example.huson.mynotebook.db.WishDao;
 import com.example.huson.mynotebook.domain.DataInfo;
 import com.example.huson.mynotebook.domain.TypeInfo;
 import com.example.huson.mynotebook.domain.WishInfo;
+import com.example.huson.mynotebook.utils.BuildDialog;
 import com.example.huson.mynotebook.utils.DebugLog;
 import com.example.huson.mynotebook.utils.ToastHelper;
 import com.example.huson.mynotebook.view.MyDialog;
@@ -45,7 +46,7 @@ public class MyListviewActivity extends BaseHeadActivity {
     private List<DataInfo> datainfo;
     private List<WishInfo> wishinfo;
     private List<String> isfinish = new ArrayList<String>();
-    private List<String> mtype = new ArrayList<String>();
+    private List<String> st_type = new ArrayList<String>();
     private MySpinnerAdapter mAdapter;
     private MyTypeSpinnerAdapter myTypeSpinnerAdapter;
     private TypeAdapter typeAdapter;
@@ -78,30 +79,33 @@ public class MyListviewActivity extends BaseHeadActivity {
             showRightButton(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final MyDialog mdialog = new MyDialog(MyListviewActivity.this, "添加类别",null, MyDialog.EDITTEXT);
-                    Button btn_query = (Button) mdialog.findViewById(R.id.btn_query);
-                    Button btn_cancel = (Button) mdialog.findViewById(R.id.btn_cancel);
-                    final EditText editText = (EditText) mdialog.findViewById(R.id.et_mydialog);
-                    btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    BuildDialog.myDialog().showDialog(MyListviewActivity.this, "添加类别",null, MyDialog.EDITTEXT);
+                    BuildDialog.myDialog().ButtonQuery(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mdialog.dismiss();
-                        }
-                    });
-                    btn_query.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (editText.getText().toString().isEmpty()){
+                            if (BuildDialog.myDialog().getEtText().isEmpty()) {
                                 ToastHelper.showToast("你的输入有误", MyListviewActivity.this);
-                            }else {
-                                type_name = editText.getText().toString();
-                                typeDao.add(type_name,"事件",null);
+                            } else {
+                                type_name = BuildDialog.myDialog().getEtText();
+                                typeDao.add(type_name, "事件", null);
+                                if (typeDao != null){
+                                    typeinfo = typeDao.findAll();
+                                    if (typeAdapter != null){
+                                        typeAdapter.clear();
+                                        typeAdapter.addAll(typeinfo);
+
+                                    }
+                                }
                             }
-                            mdialog.dismiss();
+                            BuildDialog.myDialog().DismissDialog();
                         }
                     });
-                    mdialog.show();
-
+                    BuildDialog.myDialog().ButtonCancel(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            BuildDialog.myDialog().DismissDialog();
+                        }
+                    });
                 }
             }, "添加");
             typeAdapter = new TypeAdapter(this, R.layout.item_datainfo, typeinfo);
@@ -111,15 +115,23 @@ public class MyListviewActivity extends BaseHeadActivity {
             isfinish.add("全部");
             isfinish.add("已完成");
             isfinish.add("未完成");
+            title_name = "分类查看";
             mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, isfinish);
             myTypeSpinnerAdapter = new MyTypeSpinnerAdapter(this, R.layout.item_spinner, typeinfo);
             dataDao = new DataDao(this);
             SpinnerisFinish(sp_isfinish);
             SpinnerType(sp_type);
-//            datainfo = dataDao.findAll();
+            datainfo = dataDao.findAll();
             dataAdapter = new TodayEventAdapter(this, R.layout.item_datainfo, datainfo);
             lv.setAdapter(dataAdapter);
             dataAdapter.notifyDataSetChanged();//-->从新调用getcount 调用getview
+        }else if (type.equals(MyActivity.ST_ANALYZE)){
+            isfinish.add("全部");
+            isfinish.add("月");
+            isfinish.add("周");
+            isfinish.add("日");
+            mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, isfinish);
+            STisfinish(sp_isfinish);
         }
 
     }
@@ -144,6 +156,30 @@ public class MyListviewActivity extends BaseHeadActivity {
 
     }
 
+    private void STisfinish(Spinner spinner){
+        spinner.setAdapter(mAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                DebugLog.e(String.valueOf(position));
+                isfinishNo = position;
+                if (position == 0){
+                    datainfo = dataDao.checkbyType(typeNo);
+                }else {
+                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+                }
+                if (dataAdapter != null){
+                    dataAdapter.clear();
+                    dataAdapter.addAll(datainfo);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     private void SpinnerisFinish(Spinner spinner){
         spinner.setAdapter(mAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -152,9 +188,13 @@ public class MyListviewActivity extends BaseHeadActivity {
                 DebugLog.e(String.valueOf(position));
                 isfinishNo = position;
                 if (position == 0){
-                    dataDao.checkbyType(typeNo);
+                    datainfo = dataDao.checkbyType(typeNo);
                 }else {
-                    dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+                }
+                if (dataAdapter != null){
+                    dataAdapter.clear();
+                    dataAdapter.addAll(datainfo);
                 }
             }
             @Override
@@ -171,9 +211,14 @@ public class MyListviewActivity extends BaseHeadActivity {
                 DebugLog.e(String.valueOf(position));
                 typeNo = position;
                 if (position == 0){
-                    dataDao.checkbyIsfinish(String.valueOf(isfinishNo));
+                    datainfo = dataDao.checkbyIsfinish(String.valueOf(isfinishNo));
+
                 }else {
-                    dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+                }
+                if (dataAdapter != null){
+                    dataAdapter.clear();
+                    dataAdapter.addAll(datainfo);
                 }
 
             }

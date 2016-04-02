@@ -490,5 +490,32 @@ public class DataDao {
 		return infos;
 	}
 
+	public List<String> checkbyDay(int itype){
+		SQLiteDatabase db = helper.getReadableDatabase();
+		List<String> infos = new ArrayList<String>();
+		Cursor cursor = null;
+		if (itype == 1){
+			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+					"isread"}, "distinct month", null, null, null, "_id desc");
+		}else if (itype == 2){
+			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+					"isread"}, "distinct week", null, null, null, "_id desc");
+		}else if (itype == 3){
+			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+					"isread"}, "distinct day", null, null, null, "_id desc");
+		}
+		infos.add("È«²¿");
+		while(cursor.moveToNext()){
+			String string = cursor.getString(0);
+			infos.add(string);
+		}
+		cursor.close();
+		db.close();
+		return infos;
+	}
+
 	
 }
