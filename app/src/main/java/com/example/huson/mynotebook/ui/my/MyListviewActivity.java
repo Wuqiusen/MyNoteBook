@@ -1,6 +1,7 @@
 package com.example.huson.mynotebook.ui.my;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import com.example.huson.mynotebook.R;
 import com.example.huson.mynotebook.adapter.MySpinnerAdapter;
 import com.example.huson.mynotebook.adapter.MyTypeSpinnerAdapter;
 import com.example.huson.mynotebook.adapter.MyWishAdapter;
+import com.example.huson.mynotebook.adapter.STSpinnerAdapter;
 import com.example.huson.mynotebook.adapter.TodayEventAdapter;
 import com.example.huson.mynotebook.adapter.TypeAdapter;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
@@ -27,6 +29,8 @@ import com.example.huson.mynotebook.utils.BuildDialog;
 import com.example.huson.mynotebook.utils.DebugLog;
 import com.example.huson.mynotebook.utils.ToastHelper;
 import com.example.huson.mynotebook.view.MyDialog;
+import com.example.huson.mynotebook.view.PieChart.PieChart;
+import com.example.huson.mynotebook.view.PieChart.TitleValueColorEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,7 @@ public class MyListviewActivity extends BaseHeadActivity {
     private MyTypeSpinnerAdapter myTypeSpinnerAdapter;
     private TypeAdapter typeAdapter;
     private TodayEventAdapter dataAdapter;
+    private STSpinnerAdapter STtypeAdapter;
     private int typeNo = 0;
     private int isfinishNo = 0;
 
@@ -60,6 +65,8 @@ public class MyListviewActivity extends BaseHeadActivity {
 
     private String type_name;
     private String title_name;
+
+    private PieChart piechart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +139,37 @@ public class MyListviewActivity extends BaseHeadActivity {
             isfinish.add("日");
             mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, isfinish);
             STisfinish(sp_isfinish);
+            dataDao =new DataDao(this);
+            List<String> stype = dataDao.checkType(1);
+            mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, stype);
+            STtype(sp_type);
+            lv.setVisibility(View.GONE);
+            initPieChart();
         }
 
+    }
+
+    private void STtype(Spinner spinner) {
+        sp_type.setAdapter(mAdapter);
+       spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               if (position == 0){
+                   datainfo = dataDao.checkbyType(typeNo);
+               }else {
+                   datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+               }
+               if (dataAdapter != null){
+                   dataAdapter.clear();
+                   dataAdapter.addAll(datainfo);
+               }
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> parent) {
+
+           }
+       });
     }
 
     @Override
@@ -163,15 +199,7 @@ public class MyListviewActivity extends BaseHeadActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DebugLog.e(String.valueOf(position));
                 isfinishNo = position;
-                if (position == 0){
-                    datainfo = dataDao.checkbyType(typeNo);
-                }else {
-                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
-                }
-                if (dataAdapter != null){
-                    dataAdapter.clear();
-                    dataAdapter.addAll(datainfo);
-                }
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -228,5 +256,18 @@ public class MyListviewActivity extends BaseHeadActivity {
             }
         });
 
+    }
+
+    private void initPieChart()
+    {
+        this.piechart = (PieChart)findViewById(R.id.piechart);
+        piechart.setVisibility(View.VISIBLE);
+        List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
+        data3.add(new TitleValueColorEntity("1",2,getResources().getColor(R.color.red)));
+        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
+        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
+        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
+        data3.add(new TitleValueColorEntity("5",2, getResources().getColor(R.color.green)));
+        piechart.setData(data3);
     }
 }

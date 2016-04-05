@@ -490,14 +490,12 @@ public class DataDao {
 		return infos;
 	}
 
-	public List<String> checkbyDay(int itype){
-		SQLiteDatabase db = helper.getReadableDatabase();
-		List<String> infos = new ArrayList<String>();
-		Cursor cursor = null;
+	public List<String> checkType(int itype){
+			SQLiteDatabase db = helper.getReadableDatabase();
+			List<String> infos = new ArrayList<String>();
+			Cursor cursor = null;
 		if (itype == 1){
-			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
-					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
-					"isread"}, "distinct month", null, null, null, "_id desc");
+			cursor = db.query(true,"data", new String[]{"month"}, null, null, null, null, "_id desc",null);
 		}else if (itype == 2){
 			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
 					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
@@ -507,10 +505,10 @@ public class DataDao {
 					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
 					"isread"}, "distinct day", null, null, null, "_id desc");
 		}
-		infos.add("È«²¿");
+		infos.add("å…¨éƒ¨");
 		while(cursor.moveToNext()){
-			String string = cursor.getString(0);
-			infos.add(string);
+			String month = cursor.getString(0);
+			infos.add(month);
 		}
 		cursor.close();
 		db.close();
