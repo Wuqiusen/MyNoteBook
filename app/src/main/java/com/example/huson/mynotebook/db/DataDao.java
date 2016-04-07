@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.huson.mynotebook.domain.DataInfo;
+import com.example.huson.mynotebook.utils.DebugLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -255,6 +256,42 @@ public class DataDao {
 		return infos;
 	}
 
+	public int checkTypeCount(int timeno, String mtime, int mtype){
+		SQLiteDatabase db = helper.getReadableDatabase();
+		int infos = 0;
+		Cursor cursor = null;
+		if (timeno == 0){
+//			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+//					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+//					"isread"}, "complete=?", new String[]{mtype}, null, null, "_id desc");
+		}else if (timeno == 1){
+			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+					"isread"}, "month='"+ mtime +"'and type = '" + mtype +"'", null, null, null, "_id desc");
+//			cursor = db.query("data", new String[]{"count(month)"}, "month=?", new String[]{mtype}, null, null, "month");
+		}else if (timeno == 2){
+			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+					"isread"}, "week='"+ mtime +"'and type = '" + mtype +"'", null, null, null, "_id desc");
+//			cursor = db.query("data", new String[]{"count(week)"}, "week=?", new String[]{mtype}, null, null, "week");
+		}else if (timeno == 3){
+			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
+					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
+					"isread"}, "day='"+ mtime +"'and type = '" + mtype +"'", null, null, null, "_id desc");
+//			cursor = db.query("data", new String[]{"count(day)"}, "day=?", new String[]{mtype}, null, null, "day");
+		}
+		if (cursor != null){
+			while(cursor.moveToNext()){
+				infos = cursor.getColumnCount();
+			}
+			cursor.close();
+			db.close();
+		}
+		DebugLog.e("datadao:" + mtime);
+		DebugLog.e("infos:" + infos);
+		return infos;
+	}
+
 	public List<DataInfo> checkbyType(int stype){
 		SQLiteDatabase db = helper.getReadableDatabase();
 		List<DataInfo> infos = new ArrayList<DataInfo>();
@@ -490,20 +527,45 @@ public class DataDao {
 		return infos;
 	}
 
-	public List<String> checkType(int itype){
+	/**
+		 *
+		 * @param itype
+		 * @return
+		 */
+		public List<String> checkType(int itype){
 			SQLiteDatabase db = helper.getReadableDatabase();
 			List<String> infos = new ArrayList<String>();
 			Cursor cursor = null;
+			if (itype == 1){
+				cursor = db.query(true,"data", new String[]{"month"}, null, null, null, null, "_id desc",null);
+			}else if (itype == 2){
+				cursor = db.query(true,"data", new String[]{"week"}, null, null, null, null, "_id desc",null);
+			}else if (itype == 3){
+				cursor = db.query(true,"data", new String[]{"day"}, null, null, null, null, "_id desc",null);
+			}else if (itype == 0){
+				infos.add("全部");
+			}
+			if (cursor != null){
+				while(cursor.moveToNext()){
+					String month = cursor.getString(0);
+					infos.add(month);
+				}
+				cursor.close();
+				db.close();
+			}
+			return infos;
+	}
+
+	public List<String> checkTypeCount(int itype){
+		SQLiteDatabase db = helper.getReadableDatabase();
+		List<String> infos = new ArrayList<String>();
+		Cursor cursor = null;
 		if (itype == 1){
 			cursor = db.query(true,"data", new String[]{"month"}, null, null, null, null, "_id desc",null);
 		}else if (itype == 2){
-			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
-					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
-					"isread"}, "distinct week", null, null, null, "_id desc");
+			cursor = db.query(true,"data", new String[]{"week"}, null, null, null, null, "_id desc",null);
 		}else if (itype == 3){
-			cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
-					"endtime","complete","year", "month","week","day","finishyear", "finishmonth","finishweek","finishday",
-					"isread"}, "distinct day", null, null, null, "_id desc");
+			cursor = db.query(true,"data", new String[]{"day"}, null, null, null, null, "_id desc",null);
 		}
 		infos.add("全部");
 		while(cursor.moveToNext()){

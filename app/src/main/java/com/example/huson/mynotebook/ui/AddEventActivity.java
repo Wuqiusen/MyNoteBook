@@ -165,7 +165,7 @@ public class AddEventActivity extends BaseHeadActivity{
                 Date curDate = new Date(System.currentTimeMillis());//获取当前时间
                 msgid = formatter2.format(curDate);
                 dao = new DataDao(AddEventActivity.this);
-                dao.add(msgid, type, context, starttime, endtime, "0", getTextforET(et_start_year),
+                dao.add(msgid, type, context, starttime, endtime, "2", getTextforET(et_start_year),
                         setETText(et_start_month), week, setETText(et_start_day), null, null, null, null, 1);
                 Calendar c=Calendar.getInstance();//获取日期对象
                 c.setTimeInMillis(System.currentTimeMillis());

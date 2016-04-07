@@ -2,6 +2,7 @@ package com.example.huson.mynotebook.ui.my;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,11 +48,14 @@ public class MyListviewActivity extends BaseHeadActivity {
     private LinearLayout ll_sp;
 
     private List<TypeInfo> typeinfo;
+    private List<Integer> typecount = new ArrayList<Integer>();
     private List<DataInfo> datainfo;
     private List<WishInfo> wishinfo;
     private List<String> isfinish = new ArrayList<String>();
     private List<String> st_type = new ArrayList<String>();
+    private List<String> stype;
     private MySpinnerAdapter mAdapter;
+    private MySpinnerAdapter SptypeAdapter;
     private MyTypeSpinnerAdapter myTypeSpinnerAdapter;
     private TypeAdapter typeAdapter;
     private TodayEventAdapter dataAdapter;
@@ -80,6 +84,8 @@ public class MyListviewActivity extends BaseHeadActivity {
         String type = intent.getStringExtra("type");
         typeDao = new TypeDao(this);
         typeinfo = typeDao.findAll();
+        DebugLog.e("++++++++++++++++++" + typeinfo.size());
+        DebugLog.e("++++++++++++++++++" + typeinfo.get(0).getType());
         if (type.equals(MyActivity.SETTING)){
             ll_sp.setVisibility(View.GONE);
             title_name = "事件分类";
@@ -137,32 +143,29 @@ public class MyListviewActivity extends BaseHeadActivity {
             isfinish.add("月");
             isfinish.add("周");
             isfinish.add("日");
+            title_name = "结构分析";
+            initPieChart();
             mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, isfinish);
-            STisfinish(sp_isfinish);
             dataDao =new DataDao(this);
-            List<String> stype = dataDao.checkType(1);
-            mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, stype);
+            STisfinish(sp_isfinish);
+            stype = dataDao.checkType(isfinishNo);
+            SptypeAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, stype);
             STtype(sp_type);
             lv.setVisibility(View.GONE);
-            initPieChart();
         }
 
     }
 
     private void STtype(Spinner spinner) {
-        sp_type.setAdapter(mAdapter);
+        sp_type.setAdapter(SptypeAdapter);
        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
            @Override
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               if (position == 0){
-                   datainfo = dataDao.checkbyType(typeNo);
-               }else {
-                   datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+               typeNo = position;
+               for (int i = 0; i < typeinfo.size(); i++){
+                   typecount.add(dataDao.checkTypeCount(isfinishNo,stype.get(position), i));
                }
-               if (dataAdapter != null){
-                   dataAdapter.clear();
-                   dataAdapter.addAll(datainfo);
-               }
+               initPieChart();
            }
 
            @Override
@@ -199,6 +202,31 @@ public class MyListviewActivity extends BaseHeadActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DebugLog.e(String.valueOf(position));
                 isfinishNo = position;
+                if (dataDao != null){
+                    stype = dataDao.checkType(isfinishNo);
+                    if (SptypeAdapter != null){
+                        SptypeAdapter.clear();
+                        SptypeAdapter.addAll(stype);
+
+                    }
+                }
+                List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
+                for (int i = 0; i < typeinfo.size(); i++){
+                    int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), i);
+                    DebugLog.e("count++++++++" + count);
+                    typecount.add(count);
+                    DebugLog.e("typecount++++++++" + typecount.getClass().getName());
+                    DebugLog.e("Type++++++++" + typeinfo.get(i).getType());
+
+                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),count, Color.parseColor(randomColor())));
+
+//        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
+//        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
+//        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
+//        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
+                }
+                if (!data3.isEmpty())
+                piechart.setData(data3);
 
             }
             @Override
@@ -262,12 +290,36 @@ public class MyListviewActivity extends BaseHeadActivity {
     {
         this.piechart = (PieChart)findViewById(R.id.piechart);
         piechart.setVisibility(View.VISIBLE);
-        List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
-        data3.add(new TitleValueColorEntity("1",2,getResources().getColor(R.color.red)));
-        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
-        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
-        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
-        data3.add(new TitleValueColorEntity("5",2, getResources().getColor(R.color.green)));
-        piechart.setData(data3);
+//        if (!typeinfo.isEmpty()){
+//            if (!typecount.isEmpty()){
+//                List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
+//                for (int i = 0; i < typeinfo.size(); i++){
+//                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),typecount.get(i), Color.parseColor(randomColor())));
+//                }
+//
+////        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
+////        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
+////        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
+////        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
+//                piechart.setData(data3);
+//            }
+//        }
+    }
+    /**
+     * 随机生成颜色
+     * @return 随机生成的十六进制颜色
+     */
+
+    private String randomColor(){
+        int colorStr=(int)Math.floor(Math.random() * 0xFFFFFF);
+
+        return "#"+Integer.toHexString(colorStr);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DebugLog.e("onResume");
+//        initPieChart();
     }
 }

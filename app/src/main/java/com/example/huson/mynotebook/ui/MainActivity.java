@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.huson.mynotebook.R;
+import com.example.huson.mynotebook.db.TypeDao;
 import com.example.huson.mynotebook.ui.fragment.TimeTubeFragment;
 import com.example.huson.mynotebook.ui.fragment.TodayEventFragment;
 import com.example.huson.mynotebook.adapter.MyFragmentViewPagerAdapter;
@@ -31,11 +32,18 @@ public class MainActivity extends BaseHeadActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SpUtils.setCache(this, SpUtils.COIN, "0");//设置金币
+
     }
 
     @Override
     protected void initData() {
-
+        TypeDao typeDao = new TypeDao(this);
+        if (typeDao.findAll().isEmpty()){
+            typeDao.add("类别", "事件", null);
+            typeDao.add("学习", "事件", null);
+            typeDao.add("工作", "事件", null);
+            typeDao.add("生活", "事件", null);
+        }
     }
 
     protected void findView() {
