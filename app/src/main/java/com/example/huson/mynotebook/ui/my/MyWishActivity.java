@@ -54,12 +54,19 @@ public class MyWishActivity extends BaseHeadActivity {
         lv_wish = (ListView) findViewById(R.id.lv_layout);
         lv_wish.setDivider(null);
         lv_wish.setDividerHeight(12);
+        btn_add_wish.setVisibility(View.GONE);//测试使用
 
     }
 
     @Override
     protected void initView() {
         showTitle("愿望墙");
+        showRightButton(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyWishActivity.this, AddWishActivity.class));
+            }
+        }, "许愿");
 
     }
 

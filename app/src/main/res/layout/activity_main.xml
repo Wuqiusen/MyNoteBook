@@ -23,7 +23,7 @@
             style="@style/main_tab_bottom"
             android:checked="false"
             android:drawableTop="@drawable/rb_main_tab_query"
-            android:text="时光隧道" />
+            android:text="时光之旅" />
         <RadioButton
             android:id="@+id/rb_todayevent"
             style="@style/main_tab_bottom"

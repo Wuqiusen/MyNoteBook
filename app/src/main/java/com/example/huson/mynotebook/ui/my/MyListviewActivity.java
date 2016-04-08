@@ -72,6 +72,8 @@ public class MyListviewActivity extends BaseHeadActivity {
 
     private PieChart piechart;
 
+    private int[]  color = {R.color.orange,R.color.yellow,R.color.lightgreen,R.color.green,R.color.red};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,10 +164,25 @@ public class MyListviewActivity extends BaseHeadActivity {
            @Override
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                typeNo = position;
+               List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
                for (int i = 0; i < typeinfo.size(); i++){
-                   typecount.add(dataDao.checkTypeCount(isfinishNo,stype.get(position), i));
+                   int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), i);
+                   DebugLog.e("count++++++++" + count);
+                   typecount.add(count);
+                   DebugLog.e("typecount++++++++" + typecount.getClass().getName());
+                   DebugLog.e("Type++++++++" + typeinfo.get(i).getType());
+
+                   data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),count, color[i]));
+
+//        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
+//        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
+//        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
+//        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
                }
-               initPieChart();
+               if (!data3.isEmpty())
+                   piechart.setData(data3);
+               piechart.invalidate();
+
            }
 
            @Override
@@ -218,7 +235,7 @@ public class MyListviewActivity extends BaseHeadActivity {
                     DebugLog.e("typecount++++++++" + typecount.getClass().getName());
                     DebugLog.e("Type++++++++" + typeinfo.get(i).getType());
 
-                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),count, Color.parseColor(randomColor())));
+                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),count, color[i]));
 
 //        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
 //        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
@@ -227,6 +244,7 @@ public class MyListviewActivity extends BaseHeadActivity {
                 }
                 if (!data3.isEmpty())
                 piechart.setData(data3);
+                piechart.invalidate();
 
             }
             @Override
@@ -322,4 +340,6 @@ public class MyListviewActivity extends BaseHeadActivity {
         DebugLog.e("onResume");
 //        initPieChart();
     }
+
+
 }

@@ -59,6 +59,7 @@ public class MonthDateView extends View {
 		String dayString;
 		int mMonthDays = DateUtils.getMonthDays(mSelYear, mSelMonth);
 		int weekNumber = DateUtils.getFirstDayWeek(mSelYear, mSelMonth);
+//		int weekNumber1 = DateUtils.get(mSelYear, mSelMonth);
 		Log.d("DateView", "DateView:" + mSelMonth+"月1号周" + weekNumber);
 		for(int day = 0;day < mMonthDays;day++){
 			dayString = (day + 1) + "";

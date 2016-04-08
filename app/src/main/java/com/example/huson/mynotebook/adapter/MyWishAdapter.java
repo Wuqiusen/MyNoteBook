@@ -13,6 +13,7 @@ import com.example.huson.mynotebook.db.WishDao;
 import com.example.huson.mynotebook.domain.WishInfo;
 import com.example.huson.mynotebook.ui.LookEventActivity;
 import com.example.huson.mynotebook.utils.BuildDialog;
+import com.example.huson.mynotebook.utils.SpUtils;
 import com.example.huson.mynotebook.utils.ToastHelper;
 import com.example.huson.mynotebook.view.MyDialog;
 
@@ -67,12 +68,20 @@ public class MyWishAdapter extends CommonAdapter<WishInfo> {
                         BuildDialog.myDialog().ButtonQuery(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String id = String.valueOf(item.getId());
-                                dao.updatefinish(id, 1, time);
-                                clear();
-                                addAll(dao.findAll());
-                                BuildDialog.myDialog().DismissDialog();
-                                ToastHelper.showToast("恭喜，恭喜，愿望实现，离白富美更近一步了！！！", mContext);
+                                int coin = item.getNeedcoin();
+                                int coinSum = Integer.valueOf(SpUtils.getCache(mContext, SpUtils.COIN));
+                                if (coinSum < coin){
+                                    ToastHelper.showToast("对不起，你的金币不足", mContext);
+                                }else {
+                                    coinSum = coinSum - coin;
+                                    SpUtils.setCache(mContext, SpUtils.COIN, String.valueOf(coinSum));
+                                    String id = String.valueOf(item.getId());
+                                    dao.updatefinish(id, 1, time);
+                                    clear();
+                                    addAll(dao.findAll());
+                                    BuildDialog.myDialog().DismissDialog();
+                                    ToastHelper.showToast("恭喜，恭喜，愿望实现，离白富美更近一步了！！！", mContext);
+                                }
                             }
                         });
                         BuildDialog.myDialog().ButtonCancel(new View.OnClickListener() {

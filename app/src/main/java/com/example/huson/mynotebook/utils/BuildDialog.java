@@ -133,4 +133,20 @@ public class BuildDialog {
             return sDialog.getEtText();
     }
 
+    public String getYear(){
+        return sDialog.getYear();
+    }
+    public String getMonth(){
+        return sDialog.getMonth();
+    }
+    public String getDay(){
+        return sDialog.getDay();
+    }
+    public String getWholeTime(){
+        return sDialog.getWholeTime();
+    }
+    public String getWholeDate(){
+        return sDialog.getWholeDate();
+    }
+
 }

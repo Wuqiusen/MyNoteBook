@@ -1,5 +1,6 @@
 package com.example.huson.mynotebook.view;
 
+import android.animation.TimeAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,14 +8,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.huson.mynotebook.R;
 import com.example.huson.mynotebook.utils.ToastHelper;
+
+import java.util.Calendar;
 
 
 /**
@@ -39,12 +44,23 @@ public class MyDialog extends AlertDialog {
     private Button cancel;
     private Button query;
     private EditText editText;
+    private DatePicker datePicker;
+    private TimePicker timePicker;
+
+    private Calendar calendar = Calendar.getInstance();
+    private int myear;
+    private int mmonth;
+    private int mday;
+    private int mhour;
+    private int mminute;
 
     public static final String HAVEBUTTON = "havebutton";
     public static final String NOBUTTON = "nobutton";
     public static final String PROGRESS = "progress";
     private static final String IMAGEVIEW = "imageview";
     public static final String EDITTEXT = "edittext";
+    public static final String DATEPICKER = "datepicker";
+    public static final String TIMEPICKER = "timepicker";
 
     /**
      * mtype=0版本更新 ，mtype=1进度条，mtype=2图片， mtype=3注销
@@ -91,12 +107,16 @@ public class MyDialog extends AlertDialog {
             cancel = (Button) findViewById(R.id.cancel_dialog);
             query = (Button) findViewById(R.id.query_dialog);
             editText = (EditText) findViewById(R.id.et_mydialog);
+        datePicker = (DatePicker) findViewById(R.id.datepicker);
+        timePicker = (TimePicker) findViewById(R.id.timepicker);
         title.setVisibility(View.GONE);
         line.setVisibility(View.GONE);
         mesg.setVisibility(View.GONE);
         ll_tn.setVisibility(View.GONE);
         tv_percent.setVisibility(View.GONE);
         editText.setVisibility(View.GONE);
+        datePicker.setVisibility(View.GONE);
+        timePicker.setVisibility(View.GONE);
 
         initView();
 
@@ -150,6 +170,28 @@ public class MyDialog extends AlertDialog {
                 mesg.setText(mmesg);
 
                 break;
+            case DATEPICKER:
+                title.setVisibility(View.VISIBLE);
+                line.setVisibility(View.VISIBLE);
+                ll_tn.setVisibility(View.VISIBLE);
+                datePicker.setVisibility(View.VISIBLE);
+                title.setText(mtitle);
+                myear = calendar.get(Calendar.YEAR);
+                mmonth = calendar.get(Calendar.MONTH);
+                mday = calendar.get(Calendar.DAY_OF_MONTH);
+                datePicker.init(myear, mmonth, mday, Datelistener);
+
+                break;
+            case TIMEPICKER:
+                title.setVisibility(View.VISIBLE);
+                line.setVisibility(View.VISIBLE);
+                ll_tn.setVisibility(View.VISIBLE);
+                timePicker.setVisibility(View.VISIBLE);
+                title.setText(mtitle);
+                mhour = calendar.get(Calendar.HOUR_OF_DAY);
+                mminute = calendar.get(Calendar.MINUTE);
+                timePicker.setOnTimeChangedListener(Timelistener);
+                break;
 
         }
     }
@@ -182,5 +224,40 @@ public class MyDialog extends AlertDialog {
     public String getEtText(){
         return editText.getText().toString();
     }
+    public String getYear(){
+        return String.valueOf(myear);
+    }
+    public String getMonth(){
+        return String.valueOf(mmonth);
+    }
+    public String getDay(){
+        return String.valueOf(mday);
+    }
+    public String getWholeTime(){
+        String time = String.valueOf(mhour + ":" + mminute);
+        return time;
+    }
+    public String getWholeDate(){
+        String mdate = String.valueOf(myear + "年" + mmonth + "月" + mday + "日");
+        return mdate;
+    }
+
+    private DatePicker.OnDateChangedListener Datelistener = new DatePicker.OnDateChangedListener() {
+        @Override
+        public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            myear = year;
+            mmonth = monthOfYear + 1;
+            mday = dayOfMonth;
+        }
+    };
+
+    private TimePicker.OnTimeChangedListener Timelistener = new TimePicker.OnTimeChangedListener() {
+        @Override
+        public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+            mhour = hourOfDay;
+            mminute = minute;
+        }
+    };
+
 
 }

@@ -41,12 +41,12 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
 
     @Override
     protected void initData() {
-        dao = new DataDao(this);
-        infos = dao.findAll();
-        int coin_count = 0;
-        for (int i = 0; i < infos.size(); i++){
-            coin_count = infos.get(i).getIsread() + coin_count;
-        }
+//        dao = new DataDao(this);
+//        infos = dao.findAll();
+//        int coin_count = 0;
+//        for (int i = 0; i < infos.size(); i++){
+//            coin_count = infos.get(i).getIsread() + coin_count;
+//        }
         tv_coin.setText(SpUtils.getCache(this, SpUtils.COIN));
 
     }

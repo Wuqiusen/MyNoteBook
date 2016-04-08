@@ -72,6 +72,10 @@
             android:name=".ui.my.SettingActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".view.pickerview.DateTimePickerActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

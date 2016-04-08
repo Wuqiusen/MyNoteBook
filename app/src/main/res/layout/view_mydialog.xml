@@ -74,6 +74,21 @@
         android:visibility="gone"
 
         />
+        <DatePicker
+            android:id="@+id/datepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_fit"
+            android:layout_gravity="center_horizontal"
+            android:calendarViewShown="false"
+            android:visibility="gone"/>
+        <TimePicker
+            android:id="@+id/timepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_fit"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
     <TextView
         android:id="@+id/tv_percent"
         android:layout_width="wrap_content"

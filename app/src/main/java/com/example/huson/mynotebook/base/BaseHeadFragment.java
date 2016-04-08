@@ -86,6 +86,8 @@ public class BaseHeadFragment extends BaseFragment {
 	private TextView tv_menu6_lable;
 	
 	private int curr_menu_index = -1;
+
+	private ImageView img_right;
     
 
     public Button getHeadRightButton() {
@@ -121,6 +123,7 @@ public class BaseHeadFragment extends BaseFragment {
 
         btn_backButton.setOnClickListener(listener);
         btn_backButton.setVisibility(View.VISIBLE);
+
     }
 
     public void showTitle(String title) {
@@ -133,6 +136,11 @@ public class BaseHeadFragment extends BaseFragment {
         btn_headRightButton.setOnClickListener(listener);
         btn_headRightButton.setVisibility(View.VISIBLE);
     }
+
+	public void showRightImg(OnClickListener listener){
+		img_right.setVisibility(View.VISIBLE);
+		img_right.setOnClickListener(listener);
+	}
     /**
      * 显示菜单
      */
@@ -258,6 +266,8 @@ public class BaseHeadFragment extends BaseFragment {
         lin_menu6 = (LinearLayout) view.findViewById(R.id.lin_menu6);
         iv_menu6_icon = (ImageView) view.findViewById(R.id.iv_menu6_icon);
         tv_menu6_lable = (TextView) view.findViewById(R.id.tv_menu6_lable);
+
+		img_right = (ImageView) view.findViewById(R.id.img_right);
         
     }
     

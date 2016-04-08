@@ -8,17 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.huson.mynotebook.R;
 import com.example.huson.mynotebook.base.BaseHeadFragment;
 import com.example.huson.mynotebook.ui.AddEventActivity;
 import com.example.huson.mynotebook.ui.my.MyActivity;
+import com.example.huson.mynotebook.utils.ToastHelper;
 import com.example.huson.mynotebook.view.datepicker.MonthDateView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by Huson on 2016/3/25.
@@ -34,7 +32,7 @@ public class TimeTubeFragment  extends BaseHeadFragment{
     private MonthDateView monthDateView;
     private List<Integer> list ;
 
-    private Button btn_my;
+    private Button btn_my;//测试用
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +65,10 @@ public class TimeTubeFragment  extends BaseHeadFragment{
 
             @Override
             public void onClickOnDate() {
-                Toast.makeText(getActivity(), "点击了：" + monthDateView.getmSelDay(), Toast.LENGTH_SHORT).show();
+                if (monthDateView.getmSelDay() == 0){
+                    ToastHelper.showToast("请选择你要添加的日期", getActivity());
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), AddEventActivity.class);
                 intent.putExtra("year", String.valueOf(monthDateView.getmSelYear()));
                 intent.putExtra("month", String.valueOf(monthDateView.getmSelMonth()));
@@ -82,6 +83,21 @@ public class TimeTubeFragment  extends BaseHeadFragment{
 
     private void initView() {
         showTitle("时光之旅");
+//        showHeadRightButton("个人中心", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getActivity(), MyActivity.class);
+//                getActivity().startActivity(intent);
+//            }
+//        });
+        showRightImg(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -93,8 +109,8 @@ public class TimeTubeFragment  extends BaseHeadFragment{
         tv_week  =(TextView) rootView.findViewById(R.id.week_text);
         tv_today = (TextView) rootView.findViewById(R.id.tv_today);
 
-
         btn_my = (Button) rootView.findViewById(R.id.btn_my);
+//        btn_my.setVisibility(View.GONE);//测试使用
 
     }
     private void setOnlistener(){
@@ -129,5 +145,6 @@ public class TimeTubeFragment  extends BaseHeadFragment{
                 getActivity().startActivity(intent);
             }
         });
+
     }
 }

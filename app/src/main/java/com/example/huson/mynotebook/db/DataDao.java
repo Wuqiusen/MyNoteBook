@@ -282,7 +282,7 @@ public class DataDao {
 		}
 		if (cursor != null){
 			while(cursor.moveToNext()){
-				infos = cursor.getColumnCount();
+				infos = cursor.getCount();
 			}
 			cursor.close();
 			db.close();

@@ -1,7 +1,6 @@
 package com.example.huson.mynotebook.ui;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -10,23 +9,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.huson.mynotebook.R;
-import com.example.huson.mynotebook.adapter.MySpinnerAdapter;
 import com.example.huson.mynotebook.adapter.MyTypeSpinnerAdapter;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
 import com.example.huson.mynotebook.db.DataDao;
 import com.example.huson.mynotebook.db.TypeDao;
 import com.example.huson.mynotebook.domain.TypeInfo;
 import com.example.huson.mynotebook.utils.AlarmReceiver;
+import com.example.huson.mynotebook.utils.BuildDialog;
 import com.example.huson.mynotebook.utils.DebugLog;
-import com.example.huson.mynotebook.view.PickerView;
+import com.example.huson.mynotebook.utils.ToastHelper;
+import com.example.huson.mynotebook.view.MyDialog;
+import com.example.huson.mynotebook.view.datepicker.DateUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -65,20 +64,9 @@ public class AddEventActivity extends BaseHeadActivity{
     private String week;
     private String day;
 
-    private PickerView hour_pv;
-    private PickerView minute_pv;
-    private String[] hoursArray = { "01","02", "03", "04", "05", "06", "07", "08", "09","10",
-            "11", "12", "13", "14", "15", "16", "17", "18", "19",
-            "20", "21", "22", "23", "00"};
-    private String[] minsArray = { "00","01","02","03", "04", "05", "06", "07", "08", "09"};
-    private List<String> hours = new ArrayList<String>();
-    private List<String> minutes = new ArrayList<String>();
-    private String strHour = "";
-    private String strMinute = "";
     private String now;
 
     private AlarmManager alarmManager=null;
-    Calendar cal=Calendar.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -158,16 +146,23 @@ public class AddEventActivity extends BaseHeadActivity{
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (type == 0){
+                    ToastHelper.showToast("请选择事件类型", AddEventActivity.this);
+                    return;
+                }
+                Calendar c=Calendar.getInstance();//获取日期对象
                 starttime = getTextforET(et_start_year)+setETText(et_start_month)+setETText(et_start_day)+getTextforET(et_start_hour);
                 endtime = getTextforET(et_end_year)+setETText(et_end_month)+setETText(et_end_day)+getTextforET(et_end_hour);
                 context = getTextforET(et_context);
                 SimpleDateFormat formatter2 = new SimpleDateFormat("yyyyMMddHHmmss");
                 Date curDate = new Date(System.currentTimeMillis());//获取当前时间
                 msgid = formatter2.format(curDate);
+                week = String.valueOf(DateUtils.getWeek(Integer.parseInt(getTextforET(et_start_year)),
+                        Integer.parseInt(getTextforET(et_start_month)) - 1, Integer.parseInt(getTextforET(et_start_day))));
+                DebugLog.e("==========================="+week);
                 dao = new DataDao(AddEventActivity.this);
                 dao.add(msgid, type, context, starttime, endtime, "2", getTextforET(et_start_year),
                         setETText(et_start_month), week, setETText(et_start_day), null, null, null, null, 1);
-                Calendar c=Calendar.getInstance();//获取日期对象
                 c.setTimeInMillis(System.currentTimeMillis());
                 c.set(Calendar.YEAR, Integer.parseInt(getTextforET(et_start_year)));
                 c.set(Calendar.MONTH, Integer.parseInt(getTextforET(et_start_month)) - 1);
@@ -182,36 +177,14 @@ public class AddEventActivity extends BaseHeadActivity{
                 bundle.putLong("id", Integer.valueOf(msgid.substring(4, 14)));
                 bundle.putString("context", getTextforET(et_context));
                 intent.putExtras(bundle);
-                //PendingIntent.getBroadcast intent 数据不更新。
-                //传不同的 action 来解决这个问题
-//                intent.setAction("ALARM_ACTION"+calendar.getTimeInMillis());
 
                 PendingIntent pendingIntent= PendingIntent.getBroadcast(
                         AddEventActivity.this, Integer.valueOf(msgid.substring(4, 14)), intent, 0);// 第二个参数为区别不同闹铃的唯一标识
                 /* 设置闹钟 */
                 alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis()+0, pendingIntent);
 
-
-////                c.setTimeInMillis(System.currentTimeMillis());
-//                c.set(Integer.valueOf(getTextforET(et_start_year)), Integer.valueOf(setETText(et_start_month)),
-//                        Integer.valueOf(setETText(et_start_day)), Integer.valueOf(getTextforET(et_start_hour).substring(0, 2)),
-//                        Integer.valueOf(getTextforET(et_start_hour).substring(3, 5)), 0);
-//                DebugLog.e("======="+String.valueOf(c.getTimeInMillis()));
-//                        //设置Calendar对象
-////                c.set(Calendar.HOUR, Integer.valueOf(getTextforET(et_start_hour).substring(0, 2)));        //设置闹钟小时数
-////                c.set(Calendar.MINUTE, Integer.valueOf(getTextforET(et_start_hour).substring(3, 5)));            //设置闹钟的分钟数
-////                c.set(Calendar.SECOND, 0);                //设置闹钟的秒数
-//                c.set(Calendar.MILLISECOND, 0);            //设置闹钟的毫秒数
-//                Intent intent = new Intent(AddEventActivity.this, AlarmActivity.class);    //创建Intent对象
-//                PendingIntent pi = PendingIntent.getBroadcast(AddEventActivity.this, Integer.valueOf(msgid.substring(4, 14)), intent, 0);    //创建PendingIntent
-//                alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, c.getTimeInMillis(), pi);        //设置闹钟
-////                Toast.makeText(MainActivity.this, "闹钟设置成功", Toast.LENGTH_LONG).show();//提示用户
-//
-//                DebugLog.e(String.valueOf(System.currentTimeMillis()));
-//                DebugLog.e(String.valueOf(c.getTimeInMillis()));
-//                DebugLog.e(getTextforET(et_start_hour).substring(0, 2));
-//                DebugLog.e(getTextforET(et_start_hour).substring(3, 5));
+                ToastHelper.showToast("添加成功", AddEventActivity.this);
+                AddEventActivity.this.finish();
 
             }
         });
@@ -219,8 +192,7 @@ public class AddEventActivity extends BaseHeadActivity{
         et_start_hour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder1 = null;
-                showPickerView(et_start_hour,  builder1);
+                getHour(et_start_hour);
 
             }
         });
@@ -228,81 +200,27 @@ public class AddEventActivity extends BaseHeadActivity{
         et_end_hour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder2 = null;
-                showPickerView(et_end_hour, builder2);
+                getHour(et_end_hour);
             }
         });
 
     }
 
-    private void showPickerView(final EditText editText,  AlertDialog.Builder builder){
-        builder = new AlertDialog.Builder(AddEventActivity.this);
-        View timePickerContainer = View.inflate(AddEventActivity.this,R.layout.dialog_timepicker,null);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        timePickerContainer.setLayoutParams(params);
-        builder.setView(timePickerContainer);
-        Button btn_cancel = (Button) timePickerContainer.findViewById(R.id.btn_cancel);
-        Button btn_confirm = (Button) timePickerContainer.findViewById(R.id.btn_confirm);
-        hour_pv = (PickerView) timePickerContainer.findViewById(R.id.hour_pv);
-        minute_pv = (PickerView) timePickerContainer.findViewById(R.id.minute_pv);
-        for (int i = 0; i < 24; i++)
-        {
-            if(hours != null)
-                hours.add(hoursArray[i]);
-        }
-        for (int i = 0; i < 10; i++)
-        {
-            if(minutes != null)
-                minutes.add(minsArray[i]);
-        }
-        for (int i = 10; i < 60; i++){
-            if(minutes != null)
-                minutes.add(String.valueOf(i));
-        }
-        hour_pv.setData(hours);
-        minute_pv.setData(minutes);
-        hour_pv.setOnSelectListener(new PickerView.onSelectListener() {
-
-            @Override
-            public void onSelect(String text) {
-                strHour = text;
-            }
-        });
-        minute_pv.setOnSelectListener(new PickerView.onSelectListener() {
-
-            @Override
-            public void onSelect(String text) {
-                strMinute = text;
-            }
-        });
-
-
-        if (strHour == ""){
-            strHour = now.substring(0, 2);
-            hour_pv.setSelected(strHour);
-        }else {
-            hour_pv.setSelected(strHour);
-        }
-        if (strMinute == ""){
-            strMinute = now.substring(2, 4);
-            minute_pv.setSelected(strMinute);
-        }else {
-            minute_pv.setSelected(strMinute);
-        }
-        final AlertDialog show = builder.show();
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
+    private void getHour(final EditText et){
+        BuildDialog.myDialog().showDialog(AddEventActivity.this, "请选择时间", null, MyDialog.TIMEPICKER);
+        BuildDialog.myDialog().ButtonQuery(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = strHour + "" + strMinute;
-                editText.setText(strHour + ":" + strMinute);
-                show.dismiss();
+                et.setText(BuildDialog.myDialog().getWholeTime());
+                BuildDialog.myDialog().DismissDialog();
             }
         });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        BuildDialog.myDialog().ButtonCancel(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                show.dismiss();
+                BuildDialog.myDialog().DismissDialog();
             }
         });
+
     }
 }

@@ -53,5 +53,12 @@ public class DateUtils {
     	Log.d("DateView", "DateView:First:" + calendar.getFirstDayOfWeek());
     	return calendar.get(Calendar.DAY_OF_WEEK);
     }
-    
+
+	public static int getWeek(int year, int month, int day){
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year, month, day);
+		Log.d("DateView", "DateView:First:" + calendar.getFirstDayOfWeek());
+		return calendar.get(Calendar.WEEK_OF_YEAR);
+	}
+
 }
