@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <com.example.huson.mynotebook.view.ImageListview.ImgListView
+        android:id="@+id/xListView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:dividerHeight="0dp"
+        android:divider="#ffffff"
+        android:fadingEdgeLength="0dp"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        />
+</RelativeLayout>

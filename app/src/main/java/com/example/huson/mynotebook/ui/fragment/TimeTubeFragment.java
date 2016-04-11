@@ -110,7 +110,7 @@ public class TimeTubeFragment  extends BaseHeadFragment{
         tv_today = (TextView) rootView.findViewById(R.id.tv_today);
 
         btn_my = (Button) rootView.findViewById(R.id.btn_my);
-//        btn_my.setVisibility(View.GONE);//测试使用
+        btn_my.setVisibility(View.GONE);//测试使用
 
     }
     private void setOnlistener(){
