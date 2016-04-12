@@ -1,4 +1,7 @@
-package com.example.huson.mynotebook.view.ImageListview;
+package com.example.huson.mynotebook.view.ImageList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,16 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.example.huson.mynotebook.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -50,8 +48,6 @@ public class ImagList extends Activity {
     private NewsAdapter sNewsAdapter;
     private Context sContext;
     private View headerView;
-
-    private FrameLayout fl_top;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test);
@@ -64,12 +60,12 @@ public class ImagList extends Activity {
         sNewsList = new ArrayList<News>();
         geneItems();
         sListView = (ImgListView) findViewById(R.id.xListView);
-        fl_top = (FrameLayout) findViewById(R.id.fl_top);
 //		sListView.setPullLoadEnable(true);
 
-        bmp= BitmapFactory.decodeResource(getResources(), R.mipmap.top_img);
+        bmp= BitmapFactory.decodeResource(getResources(), R.drawable.top_img);
 
-        headerView=getLayoutInflater().inflate(R.layout.top_img, null);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        headerView=inflater.inflate(R.layout.top_img_two, null);
         imageView = (ImageView) headerView.findViewById(R.id.imageView);
         initView();
         sListView.addHeaderView(headerView);
@@ -132,7 +128,7 @@ public class ImagList extends Activity {
                         null);
                 h.tv = (TextView) convertView.findViewById(R.id.tv_time);
                 h.iv = (TextView) convertView.findViewById(R.id.iv_icon);
-//                h.content = (TextView) convertView.findViewById(R.id.tv_content);
+                h.content = (TextView) convertView.findViewById(R.id.tv_content);
                 convertView.setTag(h);
             } else {
                 h = (Holder) convertView.getTag();
@@ -161,7 +157,7 @@ public class ImagList extends Activity {
 //            ++start;
             News news = new News();
             news.setTime(R.string.str_time);
-            news.setIcon(R.mipmap.psd);
+            news.setIcon(R.drawable.psd);
 //			news.setPic(R.drawable.hn_sms_in_bg);
             sNewsList.add(news);
         }

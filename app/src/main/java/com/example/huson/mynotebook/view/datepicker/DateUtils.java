@@ -1,6 +1,8 @@
 package com.example.huson.mynotebook.view.datepicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.util.Log;
 
@@ -59,6 +61,23 @@ public class DateUtils {
 		calendar.set(year, month, day);
 		Log.d("DateView", "DateView:First:" + calendar.getFirstDayOfWeek());
 		return calendar.get(Calendar.WEEK_OF_YEAR);
+	}
+
+	public static List<Integer> getNearSevenDay(int year, int month, int day){
+		List<Integer> days = new ArrayList<Integer>();
+		if (day - 7 < 0){
+			for (int j = 0; j < day; j++){
+				days.add(day - j);
+			}
+			for (int i = 0; i < 7 - day; i++){
+				days.add(getMonthDays(year, month) - i);
+			}
+		}else {
+			for (int i = 0; i < 7 ; i++){
+				days.add(day - i);
+			}
+		}
+		return days;
 	}
 
 }

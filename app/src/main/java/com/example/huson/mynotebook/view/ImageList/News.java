@@ -1,4 +1,4 @@
-package com.example.huson.mynotebook.view.ImageListview;
+package com.example.huson.mynotebook.view.ImageList;
 
 public class News {
 	private int time;

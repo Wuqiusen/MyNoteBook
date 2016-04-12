@@ -1,4 +1,4 @@
-package com.example.huson.mynotebook.view.ImageListview;
+package com.example.huson.mynotebook.view.ImageList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
