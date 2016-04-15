@@ -27,7 +27,7 @@ public class NearSevenDayCoin {
         CoinDao dao = new CoinDao(context);
 
         List<NearSevenDayCoinInfo> nearSevenDayCoinInfos;
-        nearSevenDayCoinInfos = new ArrayList<NearSevenDayCoinInfo>();
+        nearSevenDayCoinInfos = new ArrayList<>();
         NearSevenDayCoinInfo sevenDayCoinInfo = new NearSevenDayCoinInfo();
         if (day - 7 < 0){
             for (int j = 0; j < day; j++){
