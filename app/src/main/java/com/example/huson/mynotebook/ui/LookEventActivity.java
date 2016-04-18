@@ -12,12 +12,16 @@ import android.widget.TextView;
 import com.example.huson.mynotebook.R;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
 import com.example.huson.mynotebook.db.DataDao;
+import com.example.huson.mynotebook.db.TypeDao;
 import com.example.huson.mynotebook.domain.DataInfo;
+import com.example.huson.mynotebook.domain.TypeInfo;
 import com.example.huson.mynotebook.utils.BuildDialog;
 import com.example.huson.mynotebook.utils.DebugLog;
 import com.example.huson.mynotebook.utils.SpUtils;
 import com.example.huson.mynotebook.utils.ToastHelper;
 import com.example.huson.mynotebook.view.MyDialog;
+
+import java.util.List;
 
 /**
  * Created by Huson on 2016/3/29.
@@ -36,9 +40,12 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
     private DataDao dao;
     private DataInfo infos;
 
+    private TypeDao typeDao;
+    private List<TypeInfo> typeInfo;
+
     private String msgid;
     private String msg;
-    private String complete;;
+    private String complete;
     private int coincount = Integer.valueOf(SpUtils.getCache(this, SpUtils.COIN));
     private int needcoin = 0;
 
@@ -58,8 +65,10 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
         tv_event_context.setText(infos.getContext());
         tv_start_time.setText(infos.getStarttime());
         tv_end_time.setText(infos.getEndtime());
-        int type = infos.getType();
+        String type = infos.getType();
         String complete = infos.getComplete();
+        typeDao = new TypeDao(this);
+        typeInfo = typeDao.findAll();
         if (complete.equals("2")){
             cb_nofinish.setChecked(true);
         }else if (complete.equals("3")){
@@ -70,16 +79,7 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
             cb_halffinish.setClickable(false);
             cb_finish.setChecked(true);
         }
-
-        if (type == 0){
-            tv_type.setText("学习");
-        }else if (type == 1){
-            tv_type.setText("娱乐");
-        }else if (type == 2){
-            tv_type.setText("生活");
-        }else {
-            tv_type.setText("工作");
-        }
+            tv_type.setText(type);
 
     }
 

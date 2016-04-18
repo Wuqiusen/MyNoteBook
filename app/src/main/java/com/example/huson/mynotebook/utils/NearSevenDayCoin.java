@@ -19,7 +19,7 @@ public class NearSevenDayCoin {
 
     public static List<NearSevenDayCoinInfo> getNearSevenDay(Context context){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        Date curDate = new Date(System.currentTimeMillis());//鑾峰彇褰撳墠鏃堕棿
         String time = formatter.format(curDate);
         int year = Integer.valueOf(time.substring(0, 4));
         int month = Integer.valueOf(time.substring(5, 7));

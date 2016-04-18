@@ -22,7 +22,7 @@ public class DataDao {
 		helper = new DataDBOpenHelper(context);
 	}
 	
-	public long add(String msgid,int type,String context,String starttime, String endtime, String complete,
+	public long add(String msgid,String type,String context,String starttime, String endtime, String complete,
 					String year, String month, String week,String day,String finishyear,
 					String finishmonth, String finishweek, String finishday, int isread){
 		SQLiteDatabase db = helper.getWritableDatabase();
@@ -80,7 +80,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -126,7 +126,7 @@ public class DataDao {
 		while(cursor.moveToNext()){
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -172,7 +172,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -209,7 +209,7 @@ public class DataDao {
 		return infos;
 	}
 
-	public List<DataInfo> checkbyIsfinishAndType(String finish, int mtype){
+	public List<DataInfo> checkbyIsfinishAndType(String finish, String mtype){
 		SQLiteDatabase db = helper.getReadableDatabase();
 		List<DataInfo> infos = new ArrayList<DataInfo>();
 		Cursor cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
@@ -219,7 +219,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -256,7 +256,7 @@ public class DataDao {
 		return infos;
 	}
 
-	public int checkTypeCount(int timeno, String mtime, int mtype){
+	public int checkTypeCount(int timeno, String mtime, String mtype){
 		SQLiteDatabase db = helper.getReadableDatabase();
 		int infos = 0;
 		Cursor cursor = null;
@@ -292,7 +292,7 @@ public class DataDao {
 		return infos;
 	}
 
-	public List<DataInfo> checkbyType(int stype){
+	public List<DataInfo> checkbyType(String stype){
 		SQLiteDatabase db = helper.getReadableDatabase();
 		List<DataInfo> infos = new ArrayList<DataInfo>();
 		Cursor cursor = db.query("data", new String[]{"_id","msgid","type","context","starttime",
@@ -302,7 +302,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -349,7 +349,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -396,7 +396,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -443,7 +443,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
@@ -490,7 +490,7 @@ public class DataDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);

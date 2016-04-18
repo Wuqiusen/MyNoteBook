@@ -58,7 +58,7 @@ public class AddEventActivity extends BaseHeadActivity{
     private String endtime;
     private String context;
     private String complete;
-    private int type;
+    private String type = "";
     private String year;
     private String month;
     private String week;
@@ -106,7 +106,7 @@ public class AddEventActivity extends BaseHeadActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DebugLog.e(String.valueOf(position));
-                type = position;
+                type = list_type.get(position).getType();
 
             }
             @Override
@@ -146,7 +146,7 @@ public class AddEventActivity extends BaseHeadActivity{
         btn_query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type == 0){
+                if (type.equals("类别")){
                     ToastHelper.showToast("请选择事件类型", AddEventActivity.this);
                     return;
                 }

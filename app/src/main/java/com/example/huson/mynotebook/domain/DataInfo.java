@@ -4,7 +4,7 @@ package com.example.huson.mynotebook.domain;
 public class DataInfo {
 	private int id;
 	private String msgid;
-	private int type;
+	private String type;
 	private String context;
 	private String starttime;
 	private String endtime;
@@ -35,11 +35,11 @@ public class DataInfo {
 		this.msgid = msgid;
 	}
 
-	public int getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -152,7 +152,7 @@ public class DataInfo {
 		return "DataInfo{" +
 				"id=" + id +
 				", msgid='" + msgid + '\'' +
-				", type=" + type +
+				", type='" + type + '\'' +
 				", context='" + context + '\'' +
 				", starttime='" + starttime + '\'' +
 				", endtime='" + endtime + '\'' +

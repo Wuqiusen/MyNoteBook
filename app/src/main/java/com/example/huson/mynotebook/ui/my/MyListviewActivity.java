@@ -60,7 +60,8 @@ public class MyListviewActivity extends BaseHeadActivity {
     private TypeAdapter typeAdapter;
     private TodayEventAdapter dataAdapter;
     private STSpinnerAdapter STtypeAdapter;
-    private int typeNo = 0;
+    private int typeNo;
+    private String type;
     private int isfinishNo = 0;
 
     private TypeDao typeDao;
@@ -86,6 +87,7 @@ public class MyListviewActivity extends BaseHeadActivity {
         String type = intent.getStringExtra("type");
         typeDao = new TypeDao(this);
         typeinfo = typeDao.findAll();
+        type = typeinfo.get(0).getType();
         DebugLog.e("++++++++++++++++++" + typeinfo.size());
         DebugLog.e("++++++++++++++++++" + typeinfo.get(0).getType());
         if (type.equals(MyActivity.SETTING)){
@@ -164,9 +166,10 @@ public class MyListviewActivity extends BaseHeadActivity {
            @Override
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                typeNo = position;
+               type = typeinfo.get(position).getType();
                List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
                for (int i = 0; i < typeinfo.size(); i++){
-                   int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), i);
+                   int count = dataDao.checkTypeCount(isfinishNo, stype.get(position), type);
                    DebugLog.e("count++++++++" + count);
                    typecount.add(count);
                    DebugLog.e("typecount++++++++" + typecount.getClass().getName());
@@ -229,7 +232,7 @@ public class MyListviewActivity extends BaseHeadActivity {
                 }
                 List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
                 for (int i = 0; i < typeinfo.size(); i++){
-                    int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), i);
+                    int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), type);
                     DebugLog.e("count++++++++" + count);
                     typecount.add(count);
                     DebugLog.e("typecount++++++++" + typecount.getClass().getName());
@@ -262,9 +265,9 @@ public class MyListviewActivity extends BaseHeadActivity {
                 DebugLog.e(String.valueOf(position));
                 isfinishNo = position;
                 if (position == 0){
-                    datainfo = dataDao.checkbyType(typeNo);
+                    datainfo = dataDao.checkbyType(type);
                 }else {
-                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), type);
                 }
                 if (dataAdapter != null){
                     dataAdapter.clear();
@@ -284,11 +287,12 @@ public class MyListviewActivity extends BaseHeadActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DebugLog.e(String.valueOf(position));
                 typeNo = position;
+                type = typeinfo.get(position).getType();
                 if (position == 0){
                     datainfo = dataDao.checkbyIsfinish(String.valueOf(isfinishNo));
 
                 }else {
-                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), typeNo);
+                    datainfo = dataDao.checkbyIsfinishAndType(String.valueOf(isfinishNo), type);
                 }
                 if (dataAdapter != null){
                     dataAdapter.clear();

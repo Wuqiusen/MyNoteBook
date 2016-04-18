@@ -60,7 +60,7 @@ public class CoinDao {
 			DataInfo infrom = new DataInfo();
 			int id = cursor.getInt(0);
 			String msgid = cursor.getString(1);
-			int type = cursor.getInt(2);
+			String type = cursor.getString(2);
 			String context = cursor.getString(3);
 			String starttime = cursor.getString(4);
 			String endtime = cursor.getString(5);
