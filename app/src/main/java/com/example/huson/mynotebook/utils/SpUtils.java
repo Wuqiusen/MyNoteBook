@@ -12,7 +12,7 @@ public class SpUtils {
     private static SharedPreferences sp;
     private final static String CACHE_FILE_NAME = "com.example.huson.mynotebook";
     public final static String CODE = "code";
-    public final static String COIN = "coin";
+    public final static String NAME = "name";
     private static void initSp(Context mContext,String fileName) {
         sp = mContext.getSharedPreferences(fileName,Context.MODE_PRIVATE);
     }

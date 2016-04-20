@@ -38,6 +38,10 @@ public class AddWishActivity extends BaseHeadActivity {
     @Override
     protected void initData() {
         dao = new WishDao(this);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        String str = formatter.format(curDate);
+        et_wish_ture_time.setText(str);
 
     }
 

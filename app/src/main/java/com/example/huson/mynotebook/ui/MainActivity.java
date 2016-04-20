@@ -31,7 +31,7 @@ public class MainActivity extends BaseHeadActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SpUtils.setCache(this, SpUtils.COIN, "0");//设置金币
+        SpUtils.setCache(this, SpUtils.NAME, "昵称");//设置金币
 
     }
 

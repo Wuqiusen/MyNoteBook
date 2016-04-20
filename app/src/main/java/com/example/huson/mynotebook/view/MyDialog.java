@@ -238,7 +238,7 @@ public class MyDialog extends AlertDialog {
         return time;
     }
     public String getWholeDate(){
-        String mdate = String.valueOf(myear + "年" + mmonth + "月" + mday + "日");
+        String mdate = String.valueOf(myear + "-" + mmonth + "-" + mday);
         return mdate;
     }
 

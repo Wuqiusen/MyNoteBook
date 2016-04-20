@@ -27,6 +27,7 @@ import com.example.huson.mynotebook.domain.DataInfo;
 import com.example.huson.mynotebook.domain.TypeInfo;
 import com.example.huson.mynotebook.domain.WishInfo;
 import com.example.huson.mynotebook.utils.BuildDialog;
+import com.example.huson.mynotebook.utils.ColorUtil;
 import com.example.huson.mynotebook.utils.DebugLog;
 import com.example.huson.mynotebook.utils.ToastHelper;
 import com.example.huson.mynotebook.view.MyDialog;
@@ -60,7 +61,7 @@ public class MyListviewActivity extends BaseHeadActivity {
     private TypeAdapter typeAdapter;
     private TodayEventAdapter dataAdapter;
     private STSpinnerAdapter STtypeAdapter;
-    private int typeNo;
+    private int typeNo = 0;
     private String type;
     private int isfinishNo = 0;
 
@@ -73,6 +74,8 @@ public class MyListviewActivity extends BaseHeadActivity {
 
     private PieChart piechart;
 
+    private int[] colorsArr;
+
     private int[]  color = {R.color.orange,R.color.yellow,R.color.lightgreen,R.color.green,R.color.red};
 
     @Override
@@ -84,13 +87,13 @@ public class MyListviewActivity extends BaseHeadActivity {
     @Override
     protected void initData() {
         Intent intent = getIntent();
-        String type = intent.getStringExtra("type");
+        String mtype = intent.getStringExtra("type");
         typeDao = new TypeDao(this);
         typeinfo = typeDao.findAll();
         type = typeinfo.get(0).getType();
         DebugLog.e("++++++++++++++++++" + typeinfo.size());
         DebugLog.e("++++++++++++++++++" + typeinfo.get(0).getType());
-        if (type.equals(MyActivity.SETTING)){
+        if (mtype.equals(MyActivity.SETTING)){
             ll_sp.setVisibility(View.GONE);
             title_name = "事件分类";
             showRightButton(new View.OnClickListener() {
@@ -128,7 +131,7 @@ public class MyListviewActivity extends BaseHeadActivity {
             typeAdapter = new TypeAdapter(this, R.layout.item_datainfo, typeinfo);
             lv.setAdapter(typeAdapter);
             typeAdapter.notifyDataSetChanged();//-->从新调用getcount 调用getview
-        }else if (type.equals(MyActivity.ANALYZE)){
+        }else if (mtype.equals(MyActivity.ANALYZE)){
             isfinish.add("全部");
             isfinish.add("已完成");
             isfinish.add("未完成");
@@ -142,7 +145,7 @@ public class MyListviewActivity extends BaseHeadActivity {
             dataAdapter = new TodayEventAdapter(this, R.layout.item_datainfo, datainfo);
             lv.setAdapter(dataAdapter);
             dataAdapter.notifyDataSetChanged();//-->从新调用getcount 调用getview
-        }else if (type.equals(MyActivity.ST_ANALYZE)){
+        }else if (mtype.equals(MyActivity.ST_ANALYZE)){
             isfinish.add("全部");
             isfinish.add("月");
             isfinish.add("周");
@@ -168,12 +171,15 @@ public class MyListviewActivity extends BaseHeadActivity {
                typeNo = position;
                type = typeinfo.get(position).getType();
                List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
+//               colorsArr = new int[typeinfo.size()];
                for (int i = 0; i < typeinfo.size(); i++){
-                   int count = dataDao.checkTypeCount(isfinishNo, stype.get(position), type);
+                   int count = dataDao.checkTypeCount(isfinishNo, stype.get(position), typeinfo.get(i).getType());
                    DebugLog.e("count++++++++" + count);
                    typecount.add(count);
                    DebugLog.e("typecount++++++++" + typecount.getClass().getName());
                    DebugLog.e("Type++++++++" + typeinfo.get(i).getType());
+
+//                   colorsArr[i] = ColorUtil.colorLib[i];
 
                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),count, color[i]));
 
@@ -223,7 +229,7 @@ public class MyListviewActivity extends BaseHeadActivity {
                 DebugLog.e(String.valueOf(position));
                 isfinishNo = position;
                 if (dataDao != null){
-                    stype = dataDao.checkType(isfinishNo);
+                    stype = dataDao.checkType(isfinishNo);//获取相对应月、周、日的数据
                     if (SptypeAdapter != null){
                         SptypeAdapter.clear();
                         SptypeAdapter.addAll(stype);
@@ -232,7 +238,7 @@ public class MyListviewActivity extends BaseHeadActivity {
                 }
                 List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
                 for (int i = 0; i < typeinfo.size(); i++){
-                    int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), type);
+                    int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), typeinfo.get(i).getType());
                     DebugLog.e("count++++++++" + count);
                     typecount.add(count);
                     DebugLog.e("typecount++++++++" + typecount.getClass().getName());

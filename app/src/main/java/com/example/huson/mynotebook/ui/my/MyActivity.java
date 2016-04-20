@@ -8,9 +8,12 @@ import android.widget.TextView;
 
 import com.example.huson.mynotebook.R;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
+import com.example.huson.mynotebook.db.CoinDao;
 import com.example.huson.mynotebook.db.DataDao;
 import com.example.huson.mynotebook.domain.DataInfo;
+import com.example.huson.mynotebook.utils.BuildDialog;
 import com.example.huson.mynotebook.utils.SpUtils;
+import com.example.huson.mynotebook.view.MyDialog;
 
 import java.util.List;
 
@@ -24,9 +27,13 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
     private LinearLayout ll_analyze;
     private LinearLayout ll_structure_analyze;
     private LinearLayout ll_setting;
+    private TextView tv_user_name;
+
 
     private DataDao dao;
     private List<DataInfo> infos;
+
+    private CoinDao coinDao = new CoinDao(this);
 
     public final static String WISH = "wish";
     public final static String ANALYZE = "analyze";
@@ -47,7 +54,9 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
 //        for (int i = 0; i < infos.size(); i++){
 //            coin_count = infos.get(i).getIsread() + coin_count;
 //        }
-        tv_coin.setText(SpUtils.getCache(this, SpUtils.COIN));
+
+
+        tv_coin.setText(String.valueOf(coinDao.findAll()));
 
     }
 
@@ -58,12 +67,14 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
         ll_my_wish = (LinearLayout) findViewById(R.id.ll_my_wish);
         ll_structure_analyze = (LinearLayout) findViewById(R.id.ll_structure_analyze);
         ll_setting = (LinearLayout) findViewById(R.id.ll_setting);
+        tv_user_name = (TextView) findViewById(R.id.tv_user_name);
 
     }
 
     @Override
     protected void initView() {
         showTitle("个人中心");
+        tv_user_name.setText(SpUtils.getCache(MyActivity.this, SpUtils.NAME));
 
     }
 
@@ -73,6 +84,28 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
         ll_my_wish.setOnClickListener(this);
         ll_analyze.setOnClickListener(this);
         ll_setting.setOnClickListener(this);
+        tv_user_name.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                BuildDialog.myDialog().showDialog(MyActivity.this, "请输入你的昵称", null, MyDialog.EDITTEXT);
+                BuildDialog.myDialog().ButtonQuery(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SpUtils.setCache(MyActivity.this, SpUtils.NAME, BuildDialog.myDialog().getEtText());
+                        tv_user_name.setText(SpUtils.getCache(MyActivity.this, SpUtils.NAME));
+                        BuildDialog.myDialog().DismissDialog();
+                    }
+                });
+                BuildDialog.myDialog().ButtonCancel(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BuildDialog.myDialog().DismissDialog();
+                    }
+                });
+
+                return false;
+            }
+        });
 
     }
 
@@ -97,5 +130,11 @@ public class MyActivity extends BaseHeadActivity implements View.OnClickListener
                 break;
         }
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tv_coin.setText(String.valueOf(coinDao.findAll()));
     }
 }

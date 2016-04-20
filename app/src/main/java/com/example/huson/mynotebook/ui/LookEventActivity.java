@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.huson.mynotebook.R;
 import com.example.huson.mynotebook.base.BaseHeadActivity;
+import com.example.huson.mynotebook.db.CoinDao;
 import com.example.huson.mynotebook.db.DataDao;
 import com.example.huson.mynotebook.db.TypeDao;
 import com.example.huson.mynotebook.domain.DataInfo;
@@ -21,6 +22,8 @@ import com.example.huson.mynotebook.utils.SpUtils;
 import com.example.huson.mynotebook.utils.ToastHelper;
 import com.example.huson.mynotebook.view.MyDialog;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,6 +42,8 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
 
     private DataDao dao;
     private DataInfo infos;
+
+    private CoinDao coinDao = new CoinDao(this);
 
     private TypeDao typeDao;
     private List<TypeInfo> typeInfo;
@@ -140,8 +145,13 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
                     @Override
                     public void onClick(View v) {
                         BuildDialog.myDialog().DismissDialog();
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                        String time = formatter.format(curDate);
+
                         dao.updateComplete(msgid, complete);
                         SpUtils.setCache(LookEventActivity.this, SpUtils.COIN, String.valueOf(coincount + needcoin));
+                        coinDao.add(needcoin, time.substring(0, 4), time.substring(4, 6), null, time.substring(6, 8), 0);
                         ToastHelper.showToast("恭喜，你获得"+ needcoin +"个金币！", LookEventActivity.this);
                         finish();
                     }

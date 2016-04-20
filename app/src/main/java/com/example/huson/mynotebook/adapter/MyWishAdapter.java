@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.huson.mynotebook.R;
+import com.example.huson.mynotebook.db.CoinDao;
 import com.example.huson.mynotebook.db.DataDao;
 import com.example.huson.mynotebook.db.WishDao;
 import com.example.huson.mynotebook.domain.WishInfo;
@@ -37,6 +38,8 @@ public class MyWishAdapter extends CommonAdapter<WishInfo> {
     private WishDao dao;
     private String time;
 
+    private CoinDao coinDao;
+
     private int isfinish;
 
     public MyWishAdapter(Context context, int layoutId, List<WishInfo> items) {
@@ -56,12 +59,13 @@ public class MyWishAdapter extends CommonAdapter<WishInfo> {
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         time = formatter.format(curDate);
         dao = new WishDao(mcontext);
+        coinDao = new CoinDao(mContext);
         try {
             isfinish = item.getIsfinish();
             ll_item_wish.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isfinish == 1) {
+                    if (item.getIsfinish() == 1) {
                         ToastHelper.showToast("该愿望已实现", mContext);
                     } else {
                         BuildDialog.myDialog().showDialog((Activity) mContext, "提示", "确定该愿望已经实现？", MyDialog.HAVEBUTTON);
@@ -69,19 +73,23 @@ public class MyWishAdapter extends CommonAdapter<WishInfo> {
                             @Override
                             public void onClick(View v) {
                                 int coin = item.getNeedcoin();
-                                int coinSum = Integer.valueOf(SpUtils.getCache(mContext, SpUtils.COIN));
+                                int coinSum = coinDao.findAll();
                                 if (coinSum < coin){
                                     ToastHelper.showToast("对不起，你的金币不足", mContext);
                                 }else {
-                                    coinSum = coinSum - coin;
-                                    SpUtils.setCache(mContext, SpUtils.COIN, String.valueOf(coinSum));
+                                    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                                    String time = formatter.format(curDate);
+                                    coinDao.add(-coin, time.substring(0, 4), time.substring(4, 6), null, time.substring(6, 8), 0);
+//                                    coinSum = coinSum - coin;
+//                                    SpUtils.setCache(mContext, SpUtils.COIN, String.valueOf(coinSum));
                                     String id = String.valueOf(item.getId());
                                     dao.updatefinish(id, 1, time);
                                     clear();
                                     addAll(dao.findAll());
-                                    BuildDialog.myDialog().DismissDialog();
                                     ToastHelper.showToast("恭喜，恭喜，愿望实现，离白富美更近一步了！！！", mContext);
                                 }
+                                BuildDialog.myDialog().DismissDialog();
                             }
                         });
                         BuildDialog.myDialog().ButtonCancel(new View.OnClickListener() {

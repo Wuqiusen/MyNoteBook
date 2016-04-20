@@ -553,6 +553,8 @@ public class DataDao {
 				cursor.close();
 				db.close();
 			}
+			if (infos.isEmpty())
+				infos.add("无数据");
 			return infos;
 	}
 
