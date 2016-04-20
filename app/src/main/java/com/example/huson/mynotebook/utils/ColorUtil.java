@@ -8,11 +8,11 @@ public class ColorUtil {
 
     public static final int COLOR1      = 0xFFC71585;
     public static final int COLOR2      = 0xFF4B0082;
-    public static final int COLOR3        = 0xFFF0FFF0;
+    public static final int COLOR3        = 0xFFF88E8D;
     public static final int COLOR4      = 0xFFFFFF00;
     public static final int COLOR5       = 0xFFF0E68C;
 
-    public static final int COLOR6         = 0xFFE6E6FA;
+    public static final int COLOR6         = 0xFF5271A5;
     public static final int COLOR7       = 0xFFADD8E6;
     public static final int COLOR8        = 0xFF90EE90;
     public static final int COLOR9      = 0xFF20B2AA;

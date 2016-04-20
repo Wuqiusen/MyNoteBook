@@ -10,13 +10,13 @@ public class ChartData implements Serializable {
 
     public String type; //类别
 
-    public String count; //数据
+    public int count; //数据
 
     public String bfb;  //百分比
 
     public String dw;  //单位
 
-    public ChartData(String mType, String mCount, String dw)
+    public ChartData(String mType, int mCount, String dw)
     {
         super();
         this.type = mType;

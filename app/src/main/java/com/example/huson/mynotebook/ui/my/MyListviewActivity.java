@@ -1,9 +1,11 @@
 package com.example.huson.mynotebook.ui.my;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,6 +25,7 @@ import com.example.huson.mynotebook.base.BaseHeadActivity;
 import com.example.huson.mynotebook.db.DataDao;
 import com.example.huson.mynotebook.db.TypeDao;
 import com.example.huson.mynotebook.db.WishDao;
+import com.example.huson.mynotebook.domain.ChartData;
 import com.example.huson.mynotebook.domain.DataInfo;
 import com.example.huson.mynotebook.domain.TypeInfo;
 import com.example.huson.mynotebook.domain.WishInfo;
@@ -34,9 +37,18 @@ import com.example.huson.mynotebook.view.MyDialog;
 import com.example.huson.mynotebook.view.PieChart.PieChart;
 import com.example.huson.mynotebook.view.PieChart.TitleValueColorEntity;
 
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.SimpleSeriesRenderer;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Created by Huson on 2016/3/30.
@@ -47,6 +59,8 @@ public class MyListviewActivity extends BaseHeadActivity {
     private Spinner sp_isfinish;
     private Spinner sp_type;
     private LinearLayout ll_sp;
+    private LinearLayout ll_add_view;
+    private View view;
 
     private List<TypeInfo> typeinfo;
     private List<Integer> typecount = new ArrayList<Integer>();
@@ -75,8 +89,28 @@ public class MyListviewActivity extends BaseHeadActivity {
     private PieChart piechart;
 
     private int[] colorsArr;
+    private ArrayList<ChartData> chartDatas;
 
     private int[]  color = {R.color.orange,R.color.yellow,R.color.lightgreen,R.color.green,R.color.red};
+
+    private final int NO_CONTEXT = 111;
+
+    public android.os.Handler handler = new android.os.Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            try{switch(msg.what) {
+                case NO_CONTEXT:
+                    view.invalidate();
+                    ll_add_view.addView(view);
+                    ll_add_view.invalidate();
+                    break;
+            }
+
+            }catch (Exception e){
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +128,7 @@ public class MyListviewActivity extends BaseHeadActivity {
         DebugLog.e("++++++++++++++++++" + typeinfo.size());
         DebugLog.e("++++++++++++++++++" + typeinfo.get(0).getType());
         if (mtype.equals(MyActivity.SETTING)){
+            ll_add_view.setVisibility(View.GONE);
             ll_sp.setVisibility(View.GONE);
             title_name = "事件分类";
             showRightButton(new View.OnClickListener() {
@@ -132,6 +167,7 @@ public class MyListviewActivity extends BaseHeadActivity {
             lv.setAdapter(typeAdapter);
             typeAdapter.notifyDataSetChanged();//-->从新调用getcount 调用getview
         }else if (mtype.equals(MyActivity.ANALYZE)){
+            ll_add_view.setVisibility(View.GONE);
             isfinish.add("全部");
             isfinish.add("已完成");
             isfinish.add("未完成");
@@ -146,19 +182,23 @@ public class MyListviewActivity extends BaseHeadActivity {
             lv.setAdapter(dataAdapter);
             dataAdapter.notifyDataSetChanged();//-->从新调用getcount 调用getview
         }else if (mtype.equals(MyActivity.ST_ANALYZE)){
+            lv.setVisibility(View.GONE);
+            ll_add_view.setVisibility(View.VISIBLE);
             isfinish.add("全部");
             isfinish.add("月");
             isfinish.add("周");
             isfinish.add("日");
             title_name = "结构分析";
-            initPieChart();
+            chartDatas = new ArrayList<ChartData>();
+            colorsArr = new int[typeinfo.size() - 1];
+//            initPieChart();
             mAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, isfinish);
             dataDao =new DataDao(this);
             STisfinish(sp_isfinish);
             stype = dataDao.checkType(isfinishNo);
             SptypeAdapter = new MySpinnerAdapter(this, R.layout.item_spinner, stype);
             STtype(sp_type);
-            lv.setVisibility(View.GONE);
+
         }
 
     }
@@ -169,28 +209,62 @@ public class MyListviewActivity extends BaseHeadActivity {
            @Override
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                typeNo = position;
+               if (isfinishNo == 0)
+                   return;
                type = typeinfo.get(position).getType();
                List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
-//               colorsArr = new int[typeinfo.size()];
-               for (int i = 0; i < typeinfo.size(); i++){
+               if (!chartDatas.isEmpty())
+                   chartDatas.clear();
+               for (int i = 0; i < typeinfo.size(); i++) {
                    int count = dataDao.checkTypeCount(isfinishNo, stype.get(position), typeinfo.get(i).getType());
                    DebugLog.e("count++++++++" + count);
                    typecount.add(count);
                    DebugLog.e("typecount++++++++" + typecount.getClass().getName());
                    DebugLog.e("Type++++++++" + typeinfo.get(i).getType());
+                   if (i != typeinfo.size() - 1)
+                       colorsArr[i] = ColorUtil.colorLib[i];
 
-//                   colorsArr[i] = ColorUtil.colorLib[i];
+                   data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(), count, color[i]));
 
-                   data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),count, color[i]));
+                   if (i != 0) {
+                       chartDatas.add(new ChartData(typeinfo.get(i).getType(), count, ""));
+                       DebugLog.e(count + "============================");
+                   }
 
 //        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
 //        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
 //        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
 //        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
                }
-               if (!data3.isEmpty())
-                   piechart.setData(data3);
-               piechart.invalidate();
+
+               DefaultRenderer renderer = buildCategoryRenderer(colorsArr); //把分布的颜色传给渲染器
+               renderer.setZoomButtonsVisible(true);
+               renderer.setZoomEnabled(true);
+               renderer.setChartTitleTextSize(20);
+               renderer.setInScroll(true);
+
+               if (!chartDatas.isEmpty()) {
+                   //        View view = ChartFactory.getPieChartView(this, buildCategoryDataset("Project budget", values), renderer);
+                   //饼状图文字信息和对应的百分比
+                   view = getPieChartView(MyListviewActivity.this, buildCategoryDataset("Project budget", chartDatas), renderer);
+                   view.setBackgroundColor(Color.WHITE);
+//                   view.invalidate();
+//                   ll_add_view.addView(view);
+//                   ll_add_view.invalidate();
+
+
+                   DebugLog.e(chartDatas.size() + "======================================");
+               }
+
+               Message obtain = Message.obtain();
+               obtain.what = NO_CONTEXT;
+               handler.sendMessage(obtain);
+               ll_add_view.addView(view);
+
+
+//               if (!data3.isEmpty())
+//                   piechart.setData(data3);
+//               piechart.invalidate();
 
            }
 
@@ -207,6 +281,7 @@ public class MyListviewActivity extends BaseHeadActivity {
         sp_isfinish = (Spinner) findViewById(R.id.sp_isfinish);
         sp_type = (Spinner) findViewById(R.id.sp_type);
         ll_sp = (LinearLayout) findViewById(R.id.ll_sp);
+        ll_add_view = (LinearLayout) findViewById(R.id.ll_add_view);
 
     }
 
@@ -228,6 +303,8 @@ public class MyListviewActivity extends BaseHeadActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DebugLog.e(String.valueOf(position));
                 isfinishNo = position;
+                if (isfinishNo == 0)
+                    return;
                 if (dataDao != null){
                     stype = dataDao.checkType(isfinishNo);//获取相对应月、周、日的数据
                     if (SptypeAdapter != null){
@@ -237,23 +314,53 @@ public class MyListviewActivity extends BaseHeadActivity {
                     }
                 }
                 List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
+                if (!chartDatas.isEmpty())
+                    chartDatas.clear();
                 for (int i = 0; i < typeinfo.size(); i++){
                     int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), typeinfo.get(i).getType());
                     DebugLog.e("count++++++++" + count);
                     typecount.add(count);
                     DebugLog.e("typecount++++++++" + typecount.getClass().getName());
                     DebugLog.e("Type++++++++" + typeinfo.get(i).getType());
+                    if (i !=typeinfo.size()-1){
+                            colorsArr[i] = ColorUtil.colorLib[i];
+                    }
 
-                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),count, color[i]));
+                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(), count, color[i]));
+
+                    if (i != 0){
+                        chartDatas.add(new ChartData(typeinfo.get(i).getType(), count, ""));
+                    }
 
 //        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
 //        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
 //        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
 //        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
                 }
-                if (!data3.isEmpty())
-                piechart.setData(data3);
-                piechart.invalidate();
+
+                DefaultRenderer renderer = buildCategoryRenderer(colorsArr); //把分布的颜色传给渲染器
+                renderer.setZoomButtonsVisible(true);
+                renderer.setZoomEnabled(true);
+                renderer.setChartTitleTextSize(20);
+                renderer.setInScroll(true);
+
+                if (!chartDatas.isEmpty()){
+                    //        View view = ChartFactory.getPieChartView(this, buildCategoryDataset("Project budget", values), renderer);
+                    //饼状图文字信息和对应的百分比
+                    view = getPieChartView(MyListviewActivity.this, buildCategoryDataset("Project budget", chartDatas), renderer);
+                    view.setBackgroundColor(Color.WHITE);
+//                    view.invalidate();
+//                    ll_add_view.addView(view);
+//                    ll_add_view.invalidate();
+                }
+                Message obtain = Message.obtain();
+                obtain.what = NO_CONTEXT;
+                handler.sendMessage(obtain);
+                ll_add_view.addView(view);
+
+//               if (!data3.isEmpty())
+//                   piechart.setData(data3);
+//               piechart.invalidate();
 
             }
             @Override
@@ -349,6 +456,65 @@ public class MyListviewActivity extends BaseHeadActivity {
         super.onResume();
         DebugLog.e("onResume");
 //        initPieChart();
+    }
+
+    /**
+     * 把分布的颜色传给渲染器
+     * @param colors
+     * @return
+     */
+    protected DefaultRenderer buildCategoryRenderer(int[] colors) {
+        DefaultRenderer renderer = new DefaultRenderer();
+        renderer.setLabelsTextSize(15);
+        renderer.setLegendTextSize(15);
+        renderer.setMargins(new int[]{20, 30, 15, 0});
+//        renderer.setChartTitle(title);
+        for (int color : colors) {
+            SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+            r.setColor(color);
+            renderer.addSeriesRenderer(r);
+        }
+        return renderer;
+    }
+
+
+    /**
+     * 饼状图文字信息
+     * @return
+     */
+    protected CategorySeries buildCategoryDataset(String title, ArrayList<ChartData> list) {
+        CategorySeries series = new CategorySeries(title);
+        DecimalFormat df = new DecimalFormat("######0.00");
+        int All = 0;
+
+        //计算百分比
+        for (ChartData bfenbi : list){
+            All = All + bfenbi.count;
+
+        }
+
+        //根据list值分配视图 颜色
+        for (ChartData chartData : list)
+        {
+            String bfb = "";
+            double num =  Double.parseDouble(String.valueOf(chartData.count));
+            bfb =String.valueOf(df.format(Double.parseDouble(String.valueOf(chartData.count/All*100))));
+
+            series.add(chartData.type + " (" + chartData.count + chartData.dw + ")" + bfb + "%", num);
+        }
+        return series;
+    }
+
+    public static GraphicalView getPieChartView(Context context, CategorySeries dataset, DefaultRenderer renderer) {
+        checkParameters(dataset, renderer);
+        org.achartengine.chart.PieChart chart = new org.achartengine.chart.PieChart(dataset, renderer);
+        return new GraphicalView(context, chart);
+    }
+
+    private static void checkParameters(CategorySeries dataset, DefaultRenderer renderer) {
+        if(dataset == null || renderer == null || dataset.getItemCount() != renderer.getSeriesRendererCount()) {
+            throw new IllegalArgumentException("Dataset and renderer should be not null and the dataset number of items should be equal to the number of series renderers");
+        }
     }
 
 

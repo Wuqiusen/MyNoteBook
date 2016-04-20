@@ -26,9 +26,18 @@
             android:spinnerMode="dropdown"
             />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_add_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:visibility="gone">
+    </LinearLayout>
     <include
         layout="@layout/listview"
         />
+
     <com.example.huson.mynotebook.view.PieChart.PieChart
         android:id="@+id/piechart"
         android:layout_width="match_parent"

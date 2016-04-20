@@ -51,7 +51,6 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
     private String msgid;
     private String msg;
     private String complete;
-    private int coincount = Integer.valueOf(SpUtils.getCache(this, SpUtils.COIN));
     private int needcoin = 0;
 
 
@@ -150,7 +149,6 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
                         String time = formatter.format(curDate);
 
                         dao.updateComplete(msgid, complete);
-                        SpUtils.setCache(LookEventActivity.this, SpUtils.COIN, String.valueOf(coincount + needcoin));
                         coinDao.add(needcoin, time.substring(0, 4), time.substring(4, 6), null, time.substring(6, 8), 0);
                         ToastHelper.showToast("恭喜，你获得"+ needcoin +"个金币！", LookEventActivity.this);
                         finish();
