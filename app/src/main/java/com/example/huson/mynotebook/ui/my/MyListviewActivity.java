@@ -231,10 +231,6 @@ public class MyListviewActivity extends BaseHeadActivity {
                        DebugLog.e(count + "============================");
                    }
 
-//        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
-//        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
-//        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
-//        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
                }
 
                DefaultRenderer renderer = buildCategoryRenderer(colorsArr); //把分布的颜色传给渲染器
@@ -246,21 +242,15 @@ public class MyListviewActivity extends BaseHeadActivity {
                if (!chartDatas.isEmpty()) {
                    //        View view = ChartFactory.getPieChartView(this, buildCategoryDataset("Project budget", values), renderer);
                    //饼状图文字信息和对应的百分比
-                   view = getPieChartView(MyListviewActivity.this, buildCategoryDataset("Project budget", chartDatas), renderer);
+                   view = ChartFactory.getPieChartView(MyListviewActivity.this, buildCategoryDataset("Project budget", chartDatas), renderer);
                    view.setBackgroundColor(Color.WHITE);
-//                   view.invalidate();
-//                   ll_add_view.addView(view);
-//                   ll_add_view.invalidate();
+                   view.postInvalidate();
 
 
-                   DebugLog.e(chartDatas.size() + "======================================");
                }
 
-               Message obtain = Message.obtain();
-               obtain.what = NO_CONTEXT;
-               handler.sendMessage(obtain);
+               ll_add_view.removeAllViews();
                ll_add_view.addView(view);
-
 
 //               if (!data3.isEmpty())
 //                   piechart.setData(data3);
@@ -303,11 +293,10 @@ public class MyListviewActivity extends BaseHeadActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DebugLog.e(String.valueOf(position));
                 isfinishNo = position;
-                if (isfinishNo == 0)
-                    return;
-                if (dataDao != null){
+                typeNo = 0;
+                if (dataDao != null) {
                     stype = dataDao.checkType(isfinishNo);//获取相对应月、周、日的数据
-                    if (SptypeAdapter != null){
+                    if (SptypeAdapter != null) {
                         SptypeAdapter.clear();
                         SptypeAdapter.addAll(stype);
 
@@ -316,26 +305,22 @@ public class MyListviewActivity extends BaseHeadActivity {
                 List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
                 if (!chartDatas.isEmpty())
                     chartDatas.clear();
-                for (int i = 0; i < typeinfo.size(); i++){
+                for (int i = 0; i < typeinfo.size(); i++) {
                     int count = dataDao.checkTypeCount(isfinishNo, stype.get(typeNo), typeinfo.get(i).getType());
                     DebugLog.e("count++++++++" + count);
                     typecount.add(count);
                     DebugLog.e("typecount++++++++" + typecount.getClass().getName());
                     DebugLog.e("Type++++++++" + typeinfo.get(i).getType());
-                    if (i !=typeinfo.size()-1){
-                            colorsArr[i] = ColorUtil.colorLib[i];
+                    if (i != typeinfo.size() - 1) {
+                        colorsArr[i] = ColorUtil.colorLib[i];
                     }
 
                     data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(), count, color[i]));
 
-                    if (i != 0){
+                    if (i != 0) {
                         chartDatas.add(new ChartData(typeinfo.get(i).getType(), count, ""));
                     }
 
-//        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
-//        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
-//        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
-//        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
                 }
 
                 DefaultRenderer renderer = buildCategoryRenderer(colorsArr); //把分布的颜色传给渲染器
@@ -344,18 +329,14 @@ public class MyListviewActivity extends BaseHeadActivity {
                 renderer.setChartTitleTextSize(20);
                 renderer.setInScroll(true);
 
-                if (!chartDatas.isEmpty()){
+                if (!chartDatas.isEmpty()) {
                     //        View view = ChartFactory.getPieChartView(this, buildCategoryDataset("Project budget", values), renderer);
                     //饼状图文字信息和对应的百分比
-                    view = getPieChartView(MyListviewActivity.this, buildCategoryDataset("Project budget", chartDatas), renderer);
+                    view = ChartFactory.getPieChartView(MyListviewActivity.this, buildCategoryDataset("Project budget", chartDatas), renderer);
                     view.setBackgroundColor(Color.WHITE);
-//                    view.invalidate();
-//                    ll_add_view.addView(view);
-//                    ll_add_view.invalidate();
+                    view.postInvalidate();
                 }
-                Message obtain = Message.obtain();
-                obtain.what = NO_CONTEXT;
-                handler.sendMessage(obtain);
+                ll_add_view.removeAllViews();
                 ll_add_view.addView(view);
 
 //               if (!data3.isEmpty())
@@ -363,6 +344,7 @@ public class MyListviewActivity extends BaseHeadActivity {
 //               piechart.invalidate();
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -421,25 +403,6 @@ public class MyListviewActivity extends BaseHeadActivity {
 
     }
 
-    private void initPieChart()
-    {
-        this.piechart = (PieChart)findViewById(R.id.piechart);
-        piechart.setVisibility(View.VISIBLE);
-//        if (!typeinfo.isEmpty()){
-//            if (!typecount.isEmpty()){
-//                List<TitleValueColorEntity> data3 = new ArrayList<TitleValueColorEntity>();
-//                for (int i = 0; i < typeinfo.size(); i++){
-//                    data3.add(new TitleValueColorEntity(typeinfo.get(i).getType(),typecount.get(i), Color.parseColor(randomColor())));
-//                }
-//
-////        data3.add(new TitleValueColorEntity("2",3,getResources().getColor(R.color.orange)));
-////        data3.add(new TitleValueColorEntity("3",6,getResources().getColor(R.color.yellow)));
-////        data3.add(new TitleValueColorEntity("4",2,getResources().getColor(R.color.lightgreen)));
-////        data3.add(new TitleValueColorEntity("5", 2, getResources().getColor(R.color.green)));
-//                piechart.setData(data3);
-//            }
-//        }
-    }
     /**
      * 随机生成颜色
      * @return 随机生成的十六进制颜色
@@ -455,7 +418,6 @@ public class MyListviewActivity extends BaseHeadActivity {
     protected void onResume() {
         super.onResume();
         DebugLog.e("onResume");
-//        initPieChart();
     }
 
     /**
@@ -465,9 +427,9 @@ public class MyListviewActivity extends BaseHeadActivity {
      */
     protected DefaultRenderer buildCategoryRenderer(int[] colors) {
         DefaultRenderer renderer = new DefaultRenderer();
-        renderer.setLabelsTextSize(15);
-        renderer.setLegendTextSize(15);
-        renderer.setMargins(new int[]{20, 30, 15, 0});
+        renderer.setLabelsTextSize(20);//设置字体大小
+        renderer.setLegendTextSize(20);
+        renderer.setMargins(new int[]{20, 30, 15, 0});// 设置边距,上左下右
 //        renderer.setChartTitle(title);
         for (int color : colors) {
             SimpleSeriesRenderer r = new SimpleSeriesRenderer();
@@ -483,9 +445,15 @@ public class MyListviewActivity extends BaseHeadActivity {
      * @return
      */
     protected CategorySeries buildCategoryDataset(String title, ArrayList<ChartData> list) {
-        CategorySeries series = new CategorySeries(title);
-        DecimalFormat df = new DecimalFormat("######0.00");
-        int All = 0;
+        CategorySeries series = null;
+        if (series != null){
+            series.clear();
+        }else {
+            series =  new CategorySeries(title);
+        }
+
+        DecimalFormat df = new DecimalFormat("###.00");
+        float All = 0.0f;
 
         //计算百分比
         for (ChartData bfenbi : list){
@@ -498,24 +466,20 @@ public class MyListviewActivity extends BaseHeadActivity {
         {
             String bfb = "";
             double num =  Double.parseDouble(String.valueOf(chartData.count));
-            bfb =String.valueOf(df.format(Double.parseDouble(String.valueOf(chartData.count/All*100))));
+            float count = chartData.count;
+            if (All == 0){
+                bfb = "0";
+            }else {
+                bfb =String.valueOf(count/All*100);
+            }
+            DebugLog.e("count:" + chartData.count);
+            DebugLog.e("bfb:" + bfb);
 
             series.add(chartData.type + " (" + chartData.count + chartData.dw + ")" + bfb + "%", num);
         }
         return series;
     }
 
-    public static GraphicalView getPieChartView(Context context, CategorySeries dataset, DefaultRenderer renderer) {
-        checkParameters(dataset, renderer);
-        org.achartengine.chart.PieChart chart = new org.achartengine.chart.PieChart(dataset, renderer);
-        return new GraphicalView(context, chart);
-    }
-
-    private static void checkParameters(CategorySeries dataset, DefaultRenderer renderer) {
-        if(dataset == null || renderer == null || dataset.getItemCount() != renderer.getSeriesRendererCount()) {
-            throw new IllegalArgumentException("Dataset and renderer should be not null and the dataset number of items should be equal to the number of series renderers");
-        }
-    }
 
 
 }

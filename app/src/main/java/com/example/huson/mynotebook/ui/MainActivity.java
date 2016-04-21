@@ -1,7 +1,9 @@
 package com.example.huson.mynotebook.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RadioButton;
@@ -26,17 +28,23 @@ public class MainActivity extends BaseHeadActivity implements View.OnClickListen
     private RadioButton rb_todayevent;
     private ArrayList<Fragment> tabFragments;
 
+    private String page;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SpUtils.setCache(this, SpUtils.NAME, "昵称");//设置金币
+//        SpUtils.isFristLogin(this);
+//        SpUtils.setCache(this, SpUtils.NAME, "昵称");//设置金币
+
 
     }
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        page = intent.getStringExtra("page");
         TypeDao typeDao = new TypeDao(this);
         if (typeDao.findAll().isEmpty()){
             typeDao.add("类别", "事件", null);
@@ -48,8 +56,8 @@ public class MainActivity extends BaseHeadActivity implements View.OnClickListen
 
     protected void findView() {
         mViewPager = (CustomViewPager) findViewById(R.id.vp_main);
-        rb_timetube = (RadioButton) findViewById(R.id.rb_timetube);
-        rb_todayevent = (RadioButton) findViewById(R.id.rb_todayevent);
+//        rb_timetube = (RadioButton) findViewById(R.id.rb_timetube);
+//        rb_todayevent = (RadioButton) findViewById(R.id.rb_todayevent);
     }
 
     protected void initView() {
@@ -60,46 +68,51 @@ public class MainActivity extends BaseHeadActivity implements View.OnClickListen
         tabFragments.add(fragment2);
         MyFragmentViewPagerAdapter mAdapter = new MyFragmentViewPagerAdapter(getSupportFragmentManager(),tabFragments);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(0);
-        mViewPager.setPagingEnabled(false);
-        rb_timetube.setChecked(true);
         hideHeadArea();
+        if (TextUtils.equals(page, "0")){
+
+            mViewPager.setOffscreenPageLimit(0);
+        }else {
+            mViewPager.setCurrentItem(1);
+        }
+        mViewPager.setPagingEnabled(false);
     }
 
     protected void initEvent() {
-        rb_timetube.setOnClickListener(this);
-        rb_todayevent.setOnClickListener(this);
+//        rb_timetube.setOnClickListener(this);
+//        rb_todayevent.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.rb_timetube:
-                mViewPager.setCurrentItem(0);
-                break;
-            case R.id.rb_todayevent:
-                mViewPager.setCurrentItem(1);
-                break;
-        }
+//        switch (v.getId()){
+//            case R.id.rb_timetube:
+//                mViewPager.setCurrentItem(0);
+//                break;
+//            case R.id.rb_todayevent:
+//                mViewPager.setCurrentItem(1);
+//                break;
+//        }
     }
 
 
     // 双击back键，退出应用
-    private long exitTime = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                finish();
-                System.exit(0);
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    private long exitTime = 0;
+//
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+//            if ((System.currentTimeMillis() - exitTime) > 2000) {
+//                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+//                exitTime = System.currentTimeMillis();
+//            } else {
+//                finish();
+//                System.exit(0);
+//            }
+//            return true;
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 }

@@ -9,28 +9,28 @@
         android:layout_weight="1"
         android:background="@color/background_gray3"/>
 
-    <RadioGroup
-        android:id="@+id/rg_main"
-        android:layout_width="fill_parent"
-        android:layout_height="54dp"
-        android:layout_gravity="bottom"
-        android:background="@color/main_tab_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <!--<RadioGroup-->
+        <!--android:id="@+id/rg_main"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="54dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:background="@color/main_tab_background"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
 
-        <RadioButton
-            android:id="@+id/rb_timetube"
-            style="@style/main_tab_bottom"
-            android:checked="false"
-            android:drawableTop="@drawable/rb_main_tab_query"
-            android:text="时光之旅" />
-        <RadioButton
-            android:id="@+id/rb_todayevent"
-            style="@style/main_tab_bottom"
-            android:drawableTop="@drawable/rb_main_tab_mine"
-            android:text="今天事件"/>
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_timetube"-->
+            <!--style="@style/main_tab_bottom"-->
+            <!--android:checked="false"-->
+            <!--android:drawableTop="@drawable/rb_main_tab_query"-->
+            <!--android:text="时光之旅" />-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_todayevent"-->
+            <!--style="@style/main_tab_bottom"-->
+            <!--android:drawableTop="@drawable/rb_main_tab_mine"-->
+            <!--android:text="今天事件"/>-->
 
-    </RadioGroup>
+    <!--</RadioGroup>-->
 
 </LinearLayout>
 

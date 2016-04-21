@@ -6,6 +6,8 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.example.huson.mynotebook.domain.Day;
+
 public class DateUtils {
 	/**
      * 通过年份和月份 得到当月的日子
@@ -63,18 +65,30 @@ public class DateUtils {
 		return calendar.get(Calendar.WEEK_OF_YEAR);
 	}
 
-	public static List<Integer> getNearSevenDay(int year, int month, int day){
-		List<Integer> days = new ArrayList<Integer>();
+	public static List<Day> getNearSevenDay(int year, int month, int day){
+		List<Day> days = new ArrayList<Day>();
+		Day dayInfo = new Day();
 		if (day - 7 < 0){
 			for (int j = 0; j < day; j++){
-				days.add(day - j);
+				dayInfo.setYear(year);
+				dayInfo.setMonth(month);
+				dayInfo.setDay(day - j);
+				days.add(dayInfo);
 			}
 			for (int i = 0; i < 7 - day; i++){
-				days.add(getMonthDays(year, month) - i);
+//				days.add(getMonthDays(year, month) - i);
+				dayInfo.setYear(year);
+				dayInfo.setMonth(month - 1);
+				dayInfo.setDay(getMonthDays(year, month) - i);
+				days.add(dayInfo);
 			}
 		}else {
 			for (int i = 0; i < 7 ; i++){
-				days.add(day - i);
+//				days.add(day - i);
+				dayInfo.setYear(year);
+				dayInfo.setMonth(month);
+				dayInfo.setDay(day -i);
+				days.add(dayInfo);
 			}
 		}
 		return days;

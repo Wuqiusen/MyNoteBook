@@ -3,15 +3,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fl_top"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     >
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="300dp">
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="matrix"
         android:background="#EEEEEE"
@@ -32,6 +33,7 @@
             android:gravity="center_horizontal"
             android:layout_weight="1">
             <TextView
+                android:id="@+id/tv_coin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"/>
@@ -64,6 +66,7 @@
             android:gravity="center_horizontal"
             android:layout_weight="1">
             <TextView
+                android:id="@+id/tv_near_coin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"/>
@@ -71,12 +74,49 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="金币数"/>
+                android:text="最近金币数"/>
         </LinearLayout>
         </LinearLayout>
     </FrameLayout>
     <Button
+        android:id="@+id/btn_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="开启时光之旅"/>
+    <LinearLayout
+        android:id="@+id/ll_stacked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal">
+    <!--<RadioGroup-->
+        <!--android:id="@+id/rg_main"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="54dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:background="@color/main_tab_background"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
+
+        <RadioButton
+            android:id="@+id/rb_timetube"
+            style="@style/main_tab_bottom"
+            android:checked="false"
+            android:drawableTop="@drawable/rb_main_tab_query"
+            android:text="时光之旅" />
+        <RadioButton
+            android:id="@+id/rb_todayevent"
+            style="@style/main_tab_bottom"
+            android:drawableTop="@drawable/rb_main_tab_mine"
+            android:text="今天事件"/>
+
+    <!--</RadioGroup>-->
+    </LinearLayout>
 </LinearLayout>
