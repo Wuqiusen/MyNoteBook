@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_centerInParent="true"
     android:padding="@dimen/margin_small"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/rl_bg_style"
         android:layout_gravity="center_horizontal">
-        <ImageView
+        <com.example.huson.mynotebook.view.RoundImageView
             android:id="@+id/img_my"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            imagecontrol:border_outside_color="@color/btn_app_theme3"
+            imagecontrol:border_thickness="1dp"
             />
 
     </RelativeLayout>

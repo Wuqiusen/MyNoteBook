@@ -100,16 +100,16 @@ public class CoinDao {
 	public int checkbyDay(String myear, String mmonth, String mday){
 		int coin = 0;
 		SQLiteDatabase db = helper.getReadableDatabase();
-		Cursor cursor = db.query("coin", new String[]{"_id","coin","year", "month","week","day",
-				"type"}, "year='"+ myear +"'and month= '" + mmonth +"'and day= '" + mday +"'", null, null, null, "_id desc");
+		Cursor cursor = db.query("coin", new String[]{"sum(coin)"},
+				"year='"+ myear +"'and month= '" + mmonth +"'and day= '" + mday +"'", null, null, null, "_id desc");
 		while(cursor.moveToNext()){
-			int id = cursor.getInt(0);
-			coin = cursor.getInt(1);
-			String year = cursor.getString(2);
-			String month = cursor.getString(3);
-			String week = cursor.getString(4);
-			String day = cursor.getString(5);
-			int type = cursor.getInt(6);
+//			int id = cursor.getInt(0);
+			coin = cursor.getInt(0);
+//			String year = cursor.getString(2);
+//			String month = cursor.getString(3);
+//			String week = cursor.getString(4);
+//			String day = cursor.getString(5);
+//			int type = cursor.getInt(6);
 		}
 		cursor.close();
 		db.close();

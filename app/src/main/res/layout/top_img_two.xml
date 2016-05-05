@@ -1,88 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_top"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
-    >
+    android:orientation="vertical">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="300dp">
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="matrix"
-        android:background="#EEEEEE"
-        android:src="@drawable/top_img"
-        />
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/margin_fit"
-        android:layout_marginRight="@dimen/margin_small"
-        android:layout_marginLeft="@dimen/margin_small">
-        <LinearLayout
-            android:layout_width="0dp"
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/tv_coin"
-                android:layout_width="wrap_content"
+            android:background="#EEEEEE"
+            android:scaleType="matrix"
+            android:src="@drawable/top_img" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/margin_fit"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="1"/>
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="金币数" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_near_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="最近金币数" />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- android:clipToPadding="false"
+android:fitsSystemWindows="true"  与系统view分开-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:fitsSystemWindows="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.example.huson.mynotebook.view.RoundImageView
+                    android:id="@+id/img_my"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:src="@mipmap/ic_launcher"
+                    imagecontrol:border_outside_color="@color/btn_app_theme3"
+                    imagecontrol:border_thickness="0.5dp" />
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="金币数"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"/>
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="我的记事本"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_large" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_wish"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="金币数"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/tv_near_coin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="最近金币数"/>
-        </LinearLayout>
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="@dimen/margin_fit"
+                android:textColor="@color/white"
+                android:text="许愿" />
         </LinearLayout>
     </FrameLayout>
+
     <Button
         android:id="@+id/btn_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="开启时光之旅"/>
+        android:text="开启时光之旅" />
+
     <LinearLayout
         android:id="@+id/ll_stacked"
         android:layout_width="match_parent"
@@ -92,11 +143,12 @@
         android:orientation="vertical">
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:orientation="horizontal">
-    <!--<RadioGroup-->
+        <!--<RadioGroup-->
         <!--android:id="@+id/rg_main"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="54dp"-->
@@ -111,12 +163,14 @@
             android:checked="false"
             android:drawableTop="@drawable/rb_main_tab_query"
             android:text="时光之旅" />
+
         <RadioButton
             android:id="@+id/rb_todayevent"
             style="@style/main_tab_bottom"
+            android:checked="false"
             android:drawableTop="@drawable/rb_main_tab_mine"
-            android:text="今天事件"/>
+            android:text="今天事件" />
 
-    <!--</RadioGroup>-->
+        <!--</RadioGroup>-->
     </LinearLayout>
 </LinearLayout>

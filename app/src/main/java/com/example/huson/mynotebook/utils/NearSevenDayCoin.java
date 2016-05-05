@@ -29,22 +29,22 @@ public class NearSevenDayCoin {
         List<NearSevenDayCoinInfo> nearSevenDayCoinInfos;
         nearSevenDayCoinInfos = new ArrayList<>();
         NearSevenDayCoinInfo sevenDayCoinInfo = new NearSevenDayCoinInfo();
-        if (day - 7 < 0){
-            for (int j = 0; j < day; j++){
-                sevenDayCoinInfo.setDay(day - j);
-                sevenDayCoinInfo.setCoin(dao.checkbyDay(String.valueOf(year), String.valueOf(month), String.valueOf(day - j)));
-
-                for (int i = 0; i < 7 - day; i++){
-                    sevenDayCoinInfo.setDay(DateUtils.getMonthDays(year, month - 1) - i);
-                    sevenDayCoinInfo.setCoin(dao.checkbyDay(String.valueOf(year), String.valueOf(month - 1), String.valueOf(DateUtils.getMonthDays(year, month - 1) - i)));
-                }
-            }
-        }else {
-            for (int i = 0; i < 7 ; i++){
-                sevenDayCoinInfo.setDay(day - i);
-                sevenDayCoinInfo.setCoin(dao.checkbyDay(String.valueOf(year), String.valueOf(month), String.valueOf(day - i)));
-            }
-        }
+//        if (day - 7 < 0){
+//            for (int j = 0; j < day; j++){
+//                sevenDayCoinInfo.setDay(day - j);
+//                sevenDayCoinInfo.setCoin(dao.checkbyDay(String.valueOf(year), String.valueOf(month), String.valueOf(day - j)));
+//
+//                for (int i = 0; i < 7 - day; i++){
+//                    sevenDayCoinInfo.setDay(DateUtils.getMonthDays(year, month - 1) - i);
+//                    sevenDayCoinInfo.setCoin(dao.checkbyDay(String.valueOf(year), String.valueOf(month - 1), String.valueOf(DateUtils.getMonthDays(year, month - 1) - i)));
+//                }
+//            }
+//        }else {
+//            for (int i = 0; i < 7 ; i++){
+//                sevenDayCoinInfo.setDay(day - i);
+//                sevenDayCoinInfo.setCoin(dao.checkbyDay(String.valueOf(year), String.valueOf(month), String.valueOf(day - i)));
+//            }
+//        }
         nearSevenDayCoinInfos.add(sevenDayCoinInfo);
         return nearSevenDayCoinInfos;
     }

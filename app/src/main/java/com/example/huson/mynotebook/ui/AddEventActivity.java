@@ -2,7 +2,7 @@ package com.example.huson.mynotebook.ui;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -171,17 +171,19 @@ public class AddEventActivity extends BaseHeadActivity{
                 c.set(Calendar.MINUTE, Integer.parseInt(getTextforET(et_start_hour).substring(3, 5)));
                 c.set(Calendar.SECOND, 0);
                 c.set(Calendar.MILLISECOND, 0);
-                alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+
                 Intent intent = new Intent(AddEventActivity.this, AlarmReceiver.class);
                 Bundle bundle = new Bundle();
                 bundle.putLong("id", Integer.valueOf(msgid.substring(4, 14)));
                 bundle.putString("context", getTextforET(et_context));
+                intent.setAction("ALARM_ACTION");
                 intent.putExtras(bundle);
 
                 PendingIntent pendingIntent= PendingIntent.getBroadcast(
-                        AddEventActivity.this, Integer.valueOf(msgid.substring(4, 14)), intent, 0);// 第二个参数为区别不同闹铃的唯一标识
+                        AddEventActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);// 第二个参数为区别不同闹铃的唯一标识
+                alarmManager = (AlarmManager) AddEventActivity.this.getSystemService(Context.ALARM_SERVICE);
                 /* 设置闹钟 */
-                alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis()+0, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis() + 0, pendingIntent);
 
                 ToastHelper.showToast("添加成功", AddEventActivity.this);
                 AddEventActivity.this.finish();

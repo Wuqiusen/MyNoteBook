@@ -150,6 +150,8 @@ public class LookEventActivity extends BaseHeadActivity implements View.OnClickL
 
                         dao.updateComplete(msgid, complete);
                         coinDao.add(needcoin, time.substring(0, 4), time.substring(4, 6), null, time.substring(6, 8), 0);
+                        DebugLog.e("+++++++++++++++" + time.substring(4, 6));
+                        DebugLog.e("+++++++++++++++" + time.substring(6, 8));
                         ToastHelper.showToast("恭喜，你获得"+ needcoin +"个金币！", LookEventActivity.this);
                         finish();
                     }
