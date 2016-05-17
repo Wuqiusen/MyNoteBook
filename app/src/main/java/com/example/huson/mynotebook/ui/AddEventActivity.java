@@ -18,6 +18,7 @@ import com.example.huson.mynotebook.base.BaseHeadActivity;
 import com.example.huson.mynotebook.db.DataDao;
 import com.example.huson.mynotebook.db.TypeDao;
 import com.example.huson.mynotebook.domain.TypeInfo;
+import com.example.huson.mynotebook.utils.Alarm;
 import com.example.huson.mynotebook.utils.AlarmReceiver;
 import com.example.huson.mynotebook.utils.BuildDialog;
 import com.example.huson.mynotebook.utils.DebugLog;
@@ -172,18 +173,21 @@ public class AddEventActivity extends BaseHeadActivity{
                 c.set(Calendar.SECOND, 0);
                 c.set(Calendar.MILLISECOND, 0);
 
-                Intent intent = new Intent(AddEventActivity.this, AlarmReceiver.class);
-                Bundle bundle = new Bundle();
-                bundle.putLong("id", Integer.valueOf(msgid.substring(4, 14)));
-                bundle.putString("context", getTextforET(et_context));
-                intent.setAction("ALARM_ACTION");
-                intent.putExtras(bundle);
+                Alarm alarm = new Alarm();
+                alarm.setAlarmTime(c);
 
-                PendingIntent pendingIntent= PendingIntent.getBroadcast(
-                        AddEventActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);// 第二个参数为区别不同闹铃的唯一标识
-                alarmManager = (AlarmManager) AddEventActivity.this.getSystemService(Context.ALARM_SERVICE);
-                /* 设置闹钟 */
-                alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis() + 0, pendingIntent);
+//                Intent intent = new Intent(AddEventActivity.this, AlarmReceiver.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putLong("id", Integer.valueOf(msgid.substring(4, 14)));
+//                bundle.putString("context", getTextforET(et_context));
+//                intent.setAction("ALARM_ACTION");
+//                intent.putExtras(bundle);
+//
+//                PendingIntent pendingIntent= PendingIntent.getBroadcast(
+//                        AddEventActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);// 第二个参数为区别不同闹铃的唯一标识
+//                alarmManager = (AlarmManager) AddEventActivity.this.getSystemService(Context.ALARM_SERVICE);
+//                /* 设置闹钟 */
+//                alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis() + 0, pendingIntent);
 
                 ToastHelper.showToast("添加成功", AddEventActivity.this);
                 AddEventActivity.this.finish();

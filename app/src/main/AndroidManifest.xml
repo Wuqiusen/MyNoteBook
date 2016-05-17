@@ -93,6 +93,21 @@
             <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:process="za.co.neilson.alarm.serviceProcess"
+            android:name=".utils.AlarmService"
+            android:label="@string/app_name"
+            >
+        </service>
+        <receiver android:name=".utils.AlarmServiceBroadcastReciever" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".utils.AlarmAlertBroadcastReciever" >
+        </receiver>
     </application>
 
 </manifest>

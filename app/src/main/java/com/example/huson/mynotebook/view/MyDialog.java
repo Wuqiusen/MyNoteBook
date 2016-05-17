@@ -7,6 +7,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.huson.mynotebook.R;
+import com.example.huson.mynotebook.utils.OptAnimationLoader;
 import com.example.huson.mynotebook.utils.ToastHelper;
 
 import java.util.Calendar;
@@ -47,6 +50,11 @@ public class MyDialog extends AlertDialog {
     private DatePicker datePicker;
     private TimePicker timePicker;
 
+    private View mDialogView;
+    private AnimationSet mModalInAnim;
+    private AnimationSet mModalOutAnim;
+    private boolean mCloseFromCancel;
+
     private Calendar calendar = Calendar.getInstance();
     private int myear;
     private int mmonth;
@@ -64,6 +72,7 @@ public class MyDialog extends AlertDialog {
 
     /**
      * mtype=0版本更新 ，mtype=1进度条，mtype=2图片， mtype=3注销
+     *
      * @param context
      * @param url
      */
@@ -90,6 +99,35 @@ public class MyDialog extends AlertDialog {
         mmesg = mesg;
         mtype = type;
 
+        mModalInAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_in);
+        mModalOutAnim = (AnimationSet) OptAnimationLoader.loadAnimation(getContext(), R.anim.modal_out);
+        mModalOutAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mDialogView.setVisibility(View.GONE);
+                mDialogView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCloseFromCancel) {
+                            MyDialog.super.cancel();
+                        } else {
+                            MyDialog.super.dismiss();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
     }
 
 
@@ -97,16 +135,17 @@ public class MyDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_mydialog);
-        imageView =(ImageView) findViewById(R.id.img_dialog_station);
-        dialog_progressbar =(ProgressBar) findViewById(R.id.dialog_progressbar);
-            title = (TextView) findViewById(R.id.title_img);
-            line = (TextView) findViewById(R.id.line_img);
-            mesg = (TextView) findViewById(R.id.mesage_img);
-            tv_percent = (TextView) findViewById(R.id.tv_percent);
-            ll_tn= (LinearLayout) findViewById(R.id.ll_dialog);
-            cancel = (Button) findViewById(R.id.cancel_dialog);
-            query = (Button) findViewById(R.id.query_dialog);
-            editText = (EditText) findViewById(R.id.et_mydialog);
+        mDialogView = getWindow().getDecorView().findViewById(android.R.id.content);
+        imageView = (ImageView) findViewById(R.id.img_dialog_station);
+        dialog_progressbar = (ProgressBar) findViewById(R.id.dialog_progressbar);
+        title = (TextView) findViewById(R.id.title_img);
+        line = (TextView) findViewById(R.id.line_img);
+        mesg = (TextView) findViewById(R.id.mesage_img);
+        tv_percent = (TextView) findViewById(R.id.tv_percent);
+        ll_tn = (LinearLayout) findViewById(R.id.ll_dialog);
+        cancel = (Button) findViewById(R.id.cancel_dialog);
+        query = (Button) findViewById(R.id.query_dialog);
+        editText = (EditText) findViewById(R.id.et_mydialog);
         datePicker = (DatePicker) findViewById(R.id.datepicker);
         timePicker = (TimePicker) findViewById(R.id.timepicker);
         title.setVisibility(View.GONE);
@@ -123,9 +162,9 @@ public class MyDialog extends AlertDialog {
 
     }
 
-    private void initView(){
+    private void initView() {
 
-        switch (mtype){
+        switch (mtype) {
             case HAVEBUTTON:
                 title.setVisibility(View.VISIBLE);
                 line.setVisibility(View.VISIBLE);
@@ -183,6 +222,7 @@ public class MyDialog extends AlertDialog {
 
                 break;
             case TIMEPICKER:
+                timePicker.setIs24HourView(true);
                 title.setVisibility(View.VISIBLE);
                 line.setVisibility(View.VISIBLE);
                 ll_tn.setVisibility(View.VISIBLE);
@@ -196,7 +236,7 @@ public class MyDialog extends AlertDialog {
         }
     }
 
-    public void ProgressPlan(long total, long current){
+    public void ProgressPlan(long total, long current) {
 
         dialog_progressbar.setMax((int) total);
         dialog_progressbar.setProgress((int) current);
@@ -208,36 +248,41 @@ public class MyDialog extends AlertDialog {
         }
     }
 
-    public void ButtonCancel(View.OnClickListener listener){
+    public void ButtonCancel(View.OnClickListener listener) {
         cancel.setOnClickListener(listener);
     }
 
-    public void ButtonQuery(View.OnClickListener listener){
+    public void ButtonQuery(View.OnClickListener listener) {
         query.setOnClickListener(listener);
     }
 
-    public void SetButtonText(String calaeltext, String querytext){
+    public void SetButtonText(String calaeltext, String querytext) {
         cancel.setText(calaeltext);
         query.setText(querytext);
     }
 
-    public String getEtText(){
+    public String getEtText() {
         return editText.getText().toString();
     }
-    public String getYear(){
+
+    public String getYear() {
         return String.valueOf(myear);
     }
-    public String getMonth(){
+
+    public String getMonth() {
         return String.valueOf(mmonth);
     }
-    public String getDay(){
+
+    public String getDay() {
         return String.valueOf(mday);
     }
-    public String getWholeTime(){
-        String time = String.valueOf(mhour + ":" + mminute);
+
+    public String getWholeTime() {
+        String time = String.valueOf(setText(mhour) + ":" + setText(mminute));
         return time;
     }
-    public String getWholeDate(){
+
+    public String getWholeDate() {
         String mdate = String.valueOf(myear + "-" + mmonth + "-" + mday);
         return mdate;
     }
@@ -259,5 +304,18 @@ public class MyDialog extends AlertDialog {
         }
     };
 
+    private String setText(int i) {
+        String string = String.valueOf(i);
+        if (i < 10) {
+            if (String.valueOf(i).length() != 2) {
+                string = "0" + String.valueOf(i);
+            }
+        }
+        return string;
+    }
 
+    @Override
+    protected void onStart() {
+        mDialogView.startAnimation(mModalInAnim);
+    }
 }

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +39,7 @@ import com.example.huson.mynotebook.utils.DebugLog;
 import com.example.huson.mynotebook.utils.SpUtils;
 import com.example.huson.mynotebook.view.CustomViewPager;
 import com.example.huson.mynotebook.view.datepicker.DateUtils;
+import com.example.huson.mynotebook.view.datepicker.MonthDateView;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart;
@@ -66,6 +68,7 @@ public class HaveTopImgActivity extends BaseHeadActivity implements View.OnClick
     private RadioButton rb_todayevent;
     private ImageView img_my;
     private TextView tv_wish;
+
 //    private ArrayList<Fragment> tabFragments;
 //    private CustomViewPager mViewPager;
 
@@ -238,7 +241,18 @@ public class HaveTopImgActivity extends BaseHeadActivity implements View.OnClick
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SimpleDateFormat formatter2 = new SimpleDateFormat("yyyyMMdd");
+                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                String date = formatter2.format(curDate);
                 Intent intent = new Intent(HaveTopImgActivity.this, AddEventActivity.class);
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
+                String week = String.valueOf(DateUtils.getWeek(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day)));
+                intent.putExtra("year", year);
+                intent.putExtra("month", month);
+                intent.putExtra("day", day);
+                intent.putExtra("week", week);
                 startActivity(intent);
             }
         });
